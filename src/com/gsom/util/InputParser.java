@@ -1,15 +1,16 @@
 package com.gsom.util;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import com.gsom.listeners.InputParsedListener;
 import java.awt.Color;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 public abstract class InputParser {
+
 
 	ArrayList<String> strForWeights;
 	ArrayList<double[]> weights;
@@ -96,6 +97,7 @@ public abstract class InputParser {
                 }
                 System.out.println("");
             }
+
         }
 
 

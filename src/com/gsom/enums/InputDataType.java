@@ -9,5 +9,5 @@ package com.gsom.enums;
  * @author Thush
  */
 public enum InputDataType {
-    ZOO,FLAGS,TEST;
+    ZOO,FLAGS,MACHINES,LETTERS,ASHES,HISTOGRAM,CHRIME,EH_POSITION,TEXTURE_PROPORTION,GENERIC;
 }

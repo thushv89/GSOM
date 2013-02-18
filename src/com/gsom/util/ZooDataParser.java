@@ -19,8 +19,8 @@ public class ZooDataParser extends InputParser{
     public void parseInput(InputParsedListener iListener,String fileName){
 
 		String tokenizer=",";
-		int numOfDimensions = GSOMConstants.DIMENSIONS;
-
+		int numOfDimensions = 17;
+                GSOMConstants.DIMENSIONS = numOfDimensions;
 		try {
 			//use buffering, reading one line at a time
 			//FileReader always assumes default encoding is OK!

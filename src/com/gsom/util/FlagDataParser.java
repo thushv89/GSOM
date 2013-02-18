@@ -20,7 +20,8 @@ public class FlagDataParser extends InputParser{
     @Override
     public void parseInput(InputParsedListener iListener, String fileName) {
         String tokenizer=",";
-		int numOfDimensions = GSOMConstants.DIMENSIONS;
+		int numOfDimensions = 29;
+                GSOMConstants.DIMENSIONS = numOfDimensions;
 
 		try {
 			//use buffering, reading one line at a time

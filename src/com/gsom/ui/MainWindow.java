@@ -5,88 +5,133 @@
 package com.gsom.ui;
 
 import com.gsom.core.GSOMRun;
+import com.gsom.enums.InputDataType;
+import com.gsom.images.ui.resources.ImageLocationAndNodeSelector;
 import com.gsom.listeners.GSOMRunListener;
 import com.gsom.objects.GCluster;
 import com.gsom.objects.GNode;
+import com.gsom.util.GSOMConstants;
 import com.gsom.util.Utils;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Paint;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import javax.swing.JFileChooser;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.CustomXYToolTipGenerator;
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYDotRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.util.ShapeUtilities;
-import sun.java2d.pipe.SolidTextRenderer;
+import sun.misc.Launcher;
 
 /**
  *
  * @author Thush
  */
-public class MainWindow extends javax.swing.JFrame implements GSOMRunListener{
+public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
 
+    public static int distance;
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
         initComponents();
+        setLocationRelativeTo(null);
+        for (InputDataType i : InputDataType.values()) {
+            fileTypeCombo.addItem(i.toString());
+        }
+        fileTypeCombo.setSelectedItem("GENERIC");
     }
 
     private ArrayList<Color> getColorArray(int count) {
         ArrayList<Color> plotColors = new ArrayList<Color>();
-        
-        plotColors.add(new Color(0,0,0));
-        
+
+        plotColors.add(new Color(0, 0, 0));
+
         int[] rgb = new int[3];
-        for(int j=0;j<3;j++){
-                rgb[j]=0;
-            }
+        for (int j = 0; j < 3; j++) {
+            rgb[j] = 0;
+        }
         //int incrementVal = 40;
-        for(int i=0;i<3;i++){
-            
-            rgb[i]=255;
-            plotColors.add(new Color(rgb[0],rgb[1],rgb[2]));
-            if(plotColors.size()==count){
+        for (int i = 0; i < 3; i++) {
+
+            rgb[i] = 255;
+            plotColors.add(new Color(rgb[0], rgb[1], rgb[2]));
+            if (plotColors.size() == count) {
                 return plotColors;
             }
-            rgb[i]=0;
+            rgb[i] = 0;
         }
-        
-        for(int j=0;j<3;j++){
-                rgb[j]=0;
-            }
-        
-        for(int i=0;i<3;i++){
-            
-            rgb[i]=255;
-            
-            for(int j=0;j<3;j++){
-                rgb[j]=255;
-                if(i!=j){
-                    plotColors.add(new Color(rgb[0],rgb[1],rgb[2]));
+
+        for (int j = 0; j < 3; j++) {
+            rgb[j] = 0;
+        }
+
+        for (int i = 0; i < 3; i++) {
+
+            rgb[i] = 255;
+
+            for (int j = 0; j < 3; j++) {
+                rgb[j] = 255;
+                if (i != j) {
+                    plotColors.add(new Color(rgb[0], rgb[1], rgb[2]));
                 }
-                rgb[j]=0;
-                if(plotColors.size()==count){
+                rgb[j] = 0;
+                if (plotColors.size() == count) {
                     return plotColors;
                 }
             }
-            rgb[i]=0;
+            rgb[i] = 0;
         }
-        
-        
+
+
         return plotColors;
+    }
+
+    public static void saveToFile(JFreeChart chart,
+            String aFileName,
+            int width,
+            int height,
+            double quality)
+            throws FileNotFoundException, IOException {
+        BufferedImage img = draw(chart, width, height);
+
+        FileOutputStream fos = new FileOutputStream(aFileName);
+        JPEGImageEncoder encoder2 =
+                JPEGCodec.createJPEGEncoder(fos);
+        JPEGEncodeParam param2 =
+                encoder2.getDefaultJPEGEncodeParam(img);
+        param2.setQuality((float) quality, true);
+        encoder2.encode(img, param2);
+        fos.close();
+    }
+
+    protected static BufferedImage draw(JFreeChart chart, int width, int height) {
+        BufferedImage img =
+                new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = img.createGraphics();
+
+        chart.draw(g2, new Rectangle2D.Double(0, 0, width, height));
+
+        g2.dispose();
+        return img;
     }
 
     /**
@@ -102,6 +147,24 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener{
         plotMapBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         statusTextArea = new javax.swing.JTextArea();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jTextField5 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        fileLocationTextBox = new javax.swing.JTextField();
+        fileTypeCombo = new javax.swing.JComboBox();
+        browseButton = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jDistance = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -124,49 +187,256 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener{
         statusTextArea.setRows(5);
         jScrollPane1.setViewportView(statusTextArea);
 
+        jTextField1.setText("0.3");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        jTextField2.setText("4");
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
+        jTextField3.setText("0.1");
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
+
+        jTextField4.setText("0.3");
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField4ActionPerformed(evt);
+            }
+        });
+
+        jTextField5.setText("400");
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("SF");
+
+        jLabel2.setText("NR");
+
+        jLabel3.setText("FD");
+
+        jLabel4.setText("LR");
+
+        jLabel5.setText("ITR");
+
+        fileTypeCombo.setModel(new javax.swing.DefaultComboBoxModel());
+        fileTypeCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileTypeComboActionPerformed(evt);
+            }
+        });
+
+        browseButton.setText("Browse");
+        browseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Input File Location");
+
+        jLabel7.setText("File Type");
+
+        jButton1.setText("View Images");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Distance");
+
+        jDistance.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Euclidean", "Chamfer " }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fileTypeCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, 128, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(58, 58, 58)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(jLabel1)
+                                .addGap(56, 56, 56)
+                                .addComponent(jLabel2)
+                                .addGap(53, 53, 53)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                                .addComponent(jLabel4))
+                            .addComponent(fileLocationTextBox, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(browseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel5)
+                                .addGap(23, 23, 23))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
                         .addComponent(trainButton)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(plotMapBtn)
-                        .addGap(0, 94, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)))
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fileLocationTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(browseButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fileTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(trainButton)
-                    .addComponent(plotMapBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(plotMapBtn)
+                    .addComponent(jButton1))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void trainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainButtonActionPerformed
+
+        GSOMConstants.SPREAD_FACTOR = Double.parseDouble(jTextField1.getText());
+        GSOMConstants.MAX_NEIGHBORHOOD_RADIUS = Double.parseDouble(jTextField2.getText());
+        GSOMConstants.FD = Double.parseDouble(jTextField3.getText());
+        GSOMConstants.START_LEARNING_RATE = Double.parseDouble(jTextField4.getText());
+        GSOMConstants.MAX_ITERATIONS = Integer.parseInt(jTextField5.getText());
+        if (jDistance.getSelectedIndex() == 0) {
+            distance = 0;       
+        } else {
+            distance = 1;
+        }
         gRun = new GSOMRun(this);
-        gRun.runTraining();
-        
+        gRun.runTraining(fileLocationTextBox.getText(), (String) fileTypeCombo.getSelectedItem());
+//        for(InputDataType i : InputDataType.values()){
+//        fileTypeCombo.addItem(i.toString());
+//        }
+
     }//GEN-LAST:event_trainButtonActionPerformed
 
     private void plotMapBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotMapBtnActionPerformed
-        createTheXYPlot(gRun.getGSOMMap(),gRun.getTestResultMap(),gRun.getClusters());
+        createTheXYPlot(gRun.getGSOMMap(), gRun.getTestResultMap(), gRun.getClusters());
     }//GEN-LAST:event_plotMapBtnActionPerformed
 
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
+        JFileChooser chooser = new JFileChooser("E:\\GSOM2_v3\\GSOM2\\");//E:\GSOM2_v3\GSOM2
+
+        int choice = chooser.showOpenDialog(null);
+
+        if (choice != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        File chosenFile = chooser.getSelectedFile();
+        //JOptionPane.showMessageDialog(null,chosenFile.getAbsolutePath());
+        fileLocationTextBox.setText(chosenFile.getAbsolutePath());
+
+    }//GEN-LAST:event_browseButtonActionPerformed
+
+    private void fileTypeComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileTypeComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fileTypeComboActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+//    FeatureExtractionViewerApp featureExtractionViewerApp = new FeatureExtractionViewerApp();
+//    featureExtractionViewerApp.getInstance();
+
+        ImageLocationAndNodeSelector imageLocationAndNodeSelector = new ImageLocationAndNodeSelector();
+        imageLocationAndNodeSelector.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
     private GSOMRun gRun;
+
     /**
      * @param args the command line arguments
      */
@@ -205,148 +475,179 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener{
 
             public void run() {
                 new MainWindow().setVisible(true);
-                
+
             }
         });
     }
-    
-    public static void updateTextArea(String str){
-        
+
+    public static void updateTextArea(String str) {
     }
-    
-    private void createTheXYPlot(Map<String,GNode> map,final Map<String,String> testResults,ArrayList<GCluster> clusters){
+
+    private void createTheXYPlot(Map<String, GNode> map, final Map<String, String> testResults, ArrayList<GCluster> clusters) {
         ArrayList<Color> plotColors = getColorArray(12);
-       
+
         XYToolTipGenerator tipGen = new XYToolTipGenerator() {
 
             @Override
             public String generateToolTip(XYDataset xyd, int i1, int i2) {
-                int dX =(int)xyd.getXValue(i1, i2);
-                int dY = (int)xyd.getYValue(i1, i2);
-                String str = testResults.get(Utils.generateIndexString(dX,dY));
+                int dX = (int) xyd.getXValue(i1, i2);
+                int dY = (int) xyd.getYValue(i1, i2);
+                String str = testResults.get(Utils.generateIndexString(dX, dY));
                 //if(str==null){
-                   //String str = "Dummy Node";
+                //String str = "Dummy Node";
                 //}
                 return str;
             }
         };
-               
+
         XYLineAndShapeRenderer nonHitRend = new XYLineAndShapeRenderer();
         nonHitRend.setSeriesPaint(0, new Color(0, 0, 0));
         nonHitRend.setBaseLinesVisible(false);
-        
+
         ArrayList<XYSeries> seriesSet = new ArrayList<XYSeries>();
-        
+
         /*
         // identify non-hit nodes first
         XYSeries nonHitSeries = new XYSeries("Non-hit nodes");
         for(GNode node : map.values()){
-            if(!testResults.containsKey(Utils.generateIndexString(node.getX(), node.getY()))){
-                nonHitSeries.add(node.getX(),node.getY());
-            }
+        if(!testResults.containsKey(Utils.generateIndexString(node.getX(), node.getY()))){
+        nonHitSeries.add(node.getX(),node.getY());
+        }
         }
         seriesSet.add(nonHitSeries);*/
-        
-        int idx=0;
-        for(GCluster cluster:clusters){
-            XYSeries temp = new XYSeries("cluster"+idx);
-            for(GNode node:cluster.getcNodes()){
+
+        int idx = 0;
+        for (GCluster cluster : clusters) {
+            XYSeries temp = new XYSeries("cluster" + idx);
+            for (GNode node : cluster.getcNodes()) {
                 //if(testResults.containsKey(Utils.generateIndexString(node.getX(), node.getY()))){
-                    temp.add(node.getX(),node.getY());
+                temp.add(node.getX(), node.getY());
                 //}
             }
             seriesSet.add(temp);
             idx++;
         }
-        
+
         ArrayList<XYDataset> dataset = new ArrayList<XYDataset>();
-        for(XYSeries series : seriesSet){
+        for (XYSeries series : seriesSet) {
             dataset.add(new XYSeriesCollection(series));
         }
-        
+
         //XYDataset nonHitDataset = new XYSeriesCollection(nonHitSeries);
-        
-        JFreeChart chart = ChartFactory.createScatterPlot("GSOM Network", "X", "Y", null, PlotOrientation.HORIZONTAL, false, true,false);
-  
+
+        JFreeChart chart = ChartFactory.createScatterPlot("GSOM Network", "X", "Y", null, PlotOrientation.HORIZONTAL, false, true, false);
+
         XYPlot plot = (XYPlot) chart.getPlot();
-        
-        
-        
-        
-        for(int j=0;j<dataset.size();j++){    
-            
+
+
+
+
+        for (int j = 0; j < dataset.size(); j++) {
+
             XYLineAndShapeRenderer rend = new XYLineAndShapeRenderer();
-            rend.setBaseToolTipGenerator(tipGen);    
+            rend.setBaseToolTipGenerator(tipGen);
             rend.setBaseLinesVisible(false);
             //rend.setSeriesPaint(0, plotColors.get(j));            
             //rend.setSeriesPaint(1, plotColors.get(j));            
             rend.setSeriesShape(0, ShapeUtilities.createDiagonalCross(3, .3f));
             plot.setDataset(j, dataset.get(j));
-            plot.setRenderer(j,rend);
-            
-            
+            plot.setRenderer(j, rend);
+
+
         }
-              
-        
+
+
+//        ChartPanel chartpanel = new ChartPanel(chart, false, false, false, false, false);
+//        chartpanel.addMouseListener(chartpanel);
         //plot.setDataset(1,nonHitDataset);
         //plot.setRenderer(1,nonHitRend);
-        
+
         ChartFrame cFrame = new ChartFrame("GSOM Network", chart);
-        cFrame.setSize(450,500);
+        cFrame.setSize(450, 500);
         cFrame.setVisible(true);
+
+        try {
+            saveToFile(chart, "test.jpg", 450, 500, 100);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
-    private void createTheXYPlotHitAndNonHit(Map<String,GNode> map,final Map<String,String> testResults){
-       
+
+    private void createTheXYPlotHitAndNonHit(Map<String, GNode> map, final Map<String, String> testResults) {
+
         XYToolTipGenerator tipGen = new XYToolTipGenerator() {
 
             @Override
             public String generateToolTip(XYDataset xyd, int i1, int i2) {
-                int dX =(int)xyd.getXValue(i1, i2);
-                int dY = (int)xyd.getYValue(i1, i2);
-                String str = testResults.get(Utils.generateIndexString(dX,dY));
-               
+                int dX = (int) xyd.getXValue(i1, i2);
+                int dY = (int) xyd.getYValue(i1, i2);
+                String str = testResults.get(Utils.generateIndexString(dX, dY));
+
                 return str;
             }
         };
-               
+
         XYLineAndShapeRenderer rend = new XYLineAndShapeRenderer();
         rend.setSeriesPaint(0, Color.black);
         rend.setSeriesPaint(1, Color.red);
         rend.setBaseLinesVisible(false);
-        
+
         XYSeries hitSeries = new XYSeries("Hit nodes");
         XYSeries nonHitSeries = new XYSeries("Non-hit nodes");
-        
+
         // identify non-hit nodes first
-        for(GNode node : map.values()){
-            if(!testResults.containsKey(Utils.generateIndexString(node.getX(), node.getY()))){
-                nonHitSeries.add(node.getX(),node.getY());
-            }else{
-                hitSeries.add(node.getX(),node.getY());
+        for (GNode node : map.values()) {
+            if (!testResults.containsKey(Utils.generateIndexString(node.getX(), node.getY()))) {
+                nonHitSeries.add(node.getX(), node.getY());
+            } else {
+                hitSeries.add(node.getX(), node.getY());
             }
         }
-        
+
         XYDataset hDataset = new XYSeriesCollection(hitSeries);
         XYDataset nhDataset = new XYSeriesCollection(nonHitSeries);
-        
-        JFreeChart chart = ChartFactory.createScatterPlot("GSOM Network", "X", "Y", null, PlotOrientation.HORIZONTAL, false, true,false);
-  
+
+        JFreeChart chart = ChartFactory.createScatterPlot("GSOM Network", "X", "Y", null, PlotOrientation.HORIZONTAL, false, true, false);
+
         XYPlot plot = (XYPlot) chart.getPlot();
-        
+
         rend.setSeriesShape(0, ShapeUtilities.createDiagonalCross(3, .3f));
         plot.setDataset(0, hDataset);
-        plot.setDataset(1,nhDataset);
-        plot.setRenderer(0,rend);
-        plot.setRenderer(1,rend);
-            
+        plot.setDataset(1, nhDataset);
+        plot.setRenderer(0, rend);
+        plot.setRenderer(1, rend);
+
         ChartFrame cFrame = new ChartFrame("GSOM Network", chart);
-        cFrame.setSize(450,500);
+        cFrame.setSize(450, 500);
         cFrame.setVisible(true);
+
+
+        try {
+            saveToFile(chart, "e:/test1.jpg", 450, 500, 100);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton browseButton;
+    private javax.swing.JTextField fileLocationTextBox;
+    private javax.swing.JComboBox fileTypeCombo;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jDistance;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     private javax.swing.JButton plotMapBtn;
     private javax.swing.JTextArea statusTextArea;
     private javax.swing.JButton trainButton;
@@ -354,6 +655,6 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener{
 
     @Override
     public void stepCompleted(String str) {
-        statusTextArea.append(str+"\n");
+        statusTextArea.append(str + "\n");
     }
 }
