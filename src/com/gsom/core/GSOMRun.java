@@ -22,6 +22,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePositionAdjustListener, GSOMSmoothnerListener, ClusteringListener {
 
@@ -36,12 +37,16 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
     Map<String, String> testResults;
     ArrayList<GCluster> clusters;
     GSOMRunListener listener;
+    long startTime;
+    long endTimeBeforeClustering;
+    long endTimeAfterClustering;
 
     public GSOMRun(GSOMRunListener listener) {
         this.listener = listener;
     }
 
     public void runTraining(String fileName, String type) {
+        startTime = System.currentTimeMillis();
         parserFactory = new InputParserFactory();
         trainer = new GSOMTrainer();
         adjuster = new GCoordAdjuster();
@@ -133,18 +138,22 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
     @Override
     public void smootheningCompleted(Map<String, GNode> map) {
         double totalErrorValue = 0;
+        endTimeBeforeClustering = System.currentTimeMillis();
+        listener.stepCompleted("Time before Clustering : " + timeFormatter(endTimeBeforeClustering - startTime));
         listener.stepCompleted("Smoothing phase completed!");
         //goodness of the map
         for (GNode node : map.values()) {
             totalErrorValue += node.getErrorValue();
         }
-        listener.stepCompleted("Goodness of the Map : " + totalErrorValue/map.size());
+        listener.stepCompleted("Goodness of the Map : " + totalErrorValue / map.size());
         runTesting(map, parser.getWeights(), parser.getStrForWeights());
         clusterer.runClustering(map, this);
     }
 
     @Override
     public void clusteringCompleted(ArrayList<GCluster> clusters) {
+        endTimeAfterClustering = System.currentTimeMillis();
+        listener.stepCompleted("End Time : " + timeFormatter(endTimeAfterClustering - startTime));
         listener.stepCompleted("Clustering completed!");
         listener.stepCompleted("------------------------------------------------");
         this.clusters = clusters;
@@ -156,6 +165,7 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
                 bw.newLine();
             }
             bw.close();
+
         } catch (IOException e) {
             System.out.println("Error in file");
             e.printStackTrace();
@@ -189,5 +199,18 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
 //        System.out.println("> "+Values.map.size()+ " lines were scanned");
 
         br.close();
+    }
+
+    public String timeFormatter(long millis) {
+
+        if (millis > 1000) {
+            return String.format("%d s, %d ms",
+                    TimeUnit.MILLISECONDS.toSeconds(millis),
+                    millis
+                    - TimeUnit.MILLISECONDS.toSeconds(millis)*1000);
+        } else {
+            return (Long.toString(millis)+" ms");
+        }
+
     }
 }

@@ -33,20 +33,27 @@ public class KMeanClusterer {
 
     //get All posible cluster lists
     private ArrayList<ArrayList<GCluster>> getAllClusterLists(int mapSize) {
-        //TODO: Implement the method
+        
         ArrayList<ArrayList<GCluster>> clusterList = new ArrayList<ArrayList<GCluster>>();
         
-        int kMax = (int) Math.ceil(Math.sqrt(mapSize));
+        int kMax = (int) Math.ceil(Math.sqrt(mapSize));        
         for (int i=2;i<=kMax;i++){
-            clusterList.add(getKClusters(i));
+            if(getKClusters(i)!= null){
+                clusterList.add(getKClusters(i));
+            }
         }
         return clusterList;
     }
 
     //get cluster list with "k" number of clusters
     private ArrayList<GCluster> getKClusters(int k) {
+        
         ArrayList<GCluster> clusterList = new ArrayList<GCluster>();
         ArrayList<GNode> clusterCentroids = getHighestHitNeurons(k);
+        
+        if(clusterCentroids == null){
+            return null;
+        }
         
         for(GNode node: clusterCentroids){
             GCluster cluster = new GCluster(node.getWeights());
@@ -113,7 +120,7 @@ public class KMeanClusterer {
         double R = Double.MAX_VALUE;
         int bestClusterCount = 2;
         int kMax = (int) Math.ceil(Math.sqrt(map.size()));
-        for(int i=2;i<=kMax;i++){
+        for(int i=2;i<=kMax && i<kClusters.size();i++){
             double temp = getR(kClusters.get(i-2));
             if(temp <= R){
                 R= temp;
