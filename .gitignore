@@ -1,6 +1,9 @@
 *.txt
 *.png
 *.jpg
-\map
+/build/
+/dist/
+/map/
+/map2/
 
 

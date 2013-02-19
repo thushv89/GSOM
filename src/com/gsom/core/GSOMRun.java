@@ -149,7 +149,7 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
         listener.stepCompleted("------------------------------------------------");
         this.clusters = clusters;
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("map/output.txt"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("output.txt"));
             for (Map.Entry<String, String> entry : testResults.entrySet()) {
                 System.out.println(entry.getKey() + " - " + entry.getValue());
                 bw.write(entry.getKey() + " - " + entry.getValue());

@@ -1,0 +1,267 @@
+#
+# An unexpected error has been detected by Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x74dd0d23, pid=6280, tid=6976
+#
+# Java VM: Java HotSpot(TM) Client VM (1.6.0-b105 mixed mode, sharing)
+# Problematic frame:
+# C  [KERNELBASE.dll+0x10d23]
+#
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x04fd6c00):  JavaThread "AWT-EventQueue-0" [_thread_in_native, id=6976]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x06152010
+
+Registers:
+EAX=0x04b2ed54, EBX=0x06152010, ECX=0x00000000, EDX=0x7fffffff
+ESP=0x04b2ed18, EBP=0x04b2ed20, ESI=0x06152010, EDI=0x7fffffff
+EIP=0x74dd0d23, EFLAGS=0x00010206
+
+Top of Stack: (sp=0x04b2ed18)
+0x04b2ed18:   7fffffff 04b2edac 04b2ed74 74dd0d71
+0x04b2ed28:   06152010 04fd6c00 04b2edac 2837b028
+0x04b2ed38:   006be708 00000006 00000006 00000104
+0x04b2ed48:   04b2eeb4 005d0000 00000006 00000000
+0x04b2ed58:   04b2ed80 00000000 ffffffff 00000000
+0x04b2ed68:   04b2edb0 7750f4d0 1b4b0e71 04b2f100
+0x04b2ed78:   6d137817 00000000 00000001 06152010
+0x04b2ed88:   ffffffff 04b2eeb4 00000104 04fd6c00 
+
+Instructions: (pc=0x74dd0d23)
+0x74dd0d13:   fa ff ff ff 7f 77 3d 33 c9 57 8b fa 85 d2 74 28
+0x74dd0d23:   38 0e 74 04 46 4f 75 f8 85 ff 74 1c 85 c0 74 08 
+
+
+Stack: [0x04ae0000,0x04b30000),  sp=0x04b2ed18,  free space=315k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [KERNELBASE.dll+0x10d23]
+C  [KERNELBASE.dll+0x10d71]
+C  [awt.dll+0x137817]
+j  sun.awt.shell.Win32ShellFolder2.getLinkLocation(Z)Lsun/awt/shell/ShellFolder;+20
+j  sun.awt.shell.Win32ShellFolder2.isDirectory()Z+69
+j  sun.awt.shell.Win32ShellFolder2.isDirectory()Z+79
+j  sun.awt.shell.Win32ShellFolderManager2.get(Ljava/lang/String;)Ljava/lang/Object;+156
+j  sun.awt.shell.ShellFolder.get(Ljava/lang/String;)Ljava/lang/Object;+4
+j  javax.swing.plaf.metal.MetalFileChooserUI$DirectoryComboBoxModel.addItem(Ljava/io/File;)V+24
+j  javax.swing.plaf.metal.MetalFileChooserUI$DirectoryComboBoxModel.access$800(Ljavax/swing/plaf/metal/MetalFileChooserUI$DirectoryComboBoxModel;Ljava/io/File;)V+2
+j  javax.swing.plaf.metal.MetalFileChooserUI.doDirectoryChanged(Ljava/beans/PropertyChangeEvent;)V+31
+j  javax.swing.plaf.metal.MetalFileChooserUI.access$1100(Ljavax/swing/plaf/metal/MetalFileChooserUI;Ljava/beans/PropertyChangeEvent;)V+2
+j  javax.swing.plaf.metal.MetalFileChooserUI$5.propertyChange(Ljava/beans/PropertyChangeEvent;)V+59
+J  java.beans.PropertyChangeSupport.firePropertyChange(Ljava/beans/PropertyChangeEvent;)V
+J  java.beans.PropertyChangeSupport.firePropertyChange(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V
+J  java.awt.Component.firePropertyChange(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V
+j  javax.swing.JFileChooser.setCurrentDirectory(Ljava/io/File;)V+94
+j  javax.swing.JFileChooser.<init>(Ljava/lang/String;Ljavax/swing/filechooser/FileSystemView;)V+157
+j  javax.swing.JFileChooser.<init>(Ljava/lang/String;)V+6
+j  com.gsom.images.ui.resources.ImageLocationAndNodeSelector.jButton1ActionPerformed(Ljava/awt/event/ActionEvent;)V+6
+j  com.gsom.images.ui.resources.ImageLocationAndNodeSelector.access$000(Lcom/gsom/images/ui/resources/ImageLocationAndNodeSelector;Ljava/awt/event/ActionEvent;)V+2
+j  com.gsom.images.ui.resources.ImageLocationAndNodeSelector$1.actionPerformed(Ljava/awt/event/ActionEvent;)V+5
+j  javax.swing.AbstractButton.fireActionPerformed(Ljava/awt/event/ActionEvent;)V+84
+j  javax.swing.AbstractButton$Handler.actionPerformed(Ljava/awt/event/ActionEvent;)V+5
+j  javax.swing.DefaultButtonModel.fireActionPerformed(Ljava/awt/event/ActionEvent;)V+35
+j  javax.swing.DefaultButtonModel.setPressed(Z)V+117
+j  javax.swing.plaf.basic.BasicButtonListener.mouseReleased(Ljava/awt/event/MouseEvent;)V+35
+j  java.awt.Component.processMouseEvent(Ljava/awt/event/MouseEvent;)V+64
+j  javax.swing.JComponent.processMouseEvent(Ljava/awt/event/MouseEvent;)V+23
+J  java.awt.Component.processEvent(Ljava/awt/AWTEvent;)V
+J  java.awt.Container.processEvent(Ljava/awt/AWTEvent;)V
+J  java.awt.Component.dispatchEventImpl(Ljava/awt/AWTEvent;)V
+J  java.awt.Container.dispatchEventImpl(Ljava/awt/AWTEvent;)V
+J  java.awt.LightweightDispatcher.retargetMouseEvent(Ljava/awt/Component;ILjava/awt/event/MouseEvent;)V
+J  java.awt.LightweightDispatcher.processMouseEvent(Ljava/awt/event/MouseEvent;)Z
+J  java.awt.LightweightDispatcher.dispatchEvent(Ljava/awt/AWTEvent;)Z
+J  java.awt.Container.dispatchEventImpl(Ljava/awt/AWTEvent;)V
+J  java.awt.Window.dispatchEventImpl(Ljava/awt/AWTEvent;)V
+J  java.awt.EventQueue.dispatchEvent(Ljava/awt/AWTEvent;)V
+J  java.awt.EventDispatchThread.pumpOneEventForFilters(I)Z
+J  java.awt.EventDispatchThread.pumpEventsForFilter(ILjava/awt/Conditional;Ljava/awt/EventFilter;)V
+j  java.awt.EventDispatchThread.pumpEventsForHierarchy(ILjava/awt/Conditional;Ljava/awt/Component;)V+11
+j  java.awt.EventDispatchThread.pumpEvents(ILjava/awt/Conditional;)V+4
+j  java.awt.EventDispatchThread.pumpEvents(Ljava/awt/Conditional;)V+3
+j  java.awt.EventDispatchThread.run()V+9
+v  ~StubRoutines::call_stub
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  sun.awt.shell.Win32ShellFolder2.getLinkLocation(JJZ)J+0
+j  sun.awt.shell.Win32ShellFolder2.getLinkLocation(Z)Lsun/awt/shell/ShellFolder;+20
+j  sun.awt.shell.Win32ShellFolder2.isDirectory()Z+69
+j  sun.awt.shell.Win32ShellFolder2.isDirectory()Z+79
+j  sun.awt.shell.Win32ShellFolderManager2.get(Ljava/lang/String;)Ljava/lang/Object;+156
+j  sun.awt.shell.ShellFolder.get(Ljava/lang/String;)Ljava/lang/Object;+4
+j  javax.swing.plaf.metal.MetalFileChooserUI$DirectoryComboBoxModel.addItem(Ljava/io/File;)V+24
+j  javax.swing.plaf.metal.MetalFileChooserUI$DirectoryComboBoxModel.access$800(Ljavax/swing/plaf/metal/MetalFileChooserUI$DirectoryComboBoxModel;Ljava/io/File;)V+2
+j  javax.swing.plaf.metal.MetalFileChooserUI.doDirectoryChanged(Ljava/beans/PropertyChangeEvent;)V+31
+j  javax.swing.plaf.metal.MetalFileChooserUI.access$1100(Ljavax/swing/plaf/metal/MetalFileChooserUI;Ljava/beans/PropertyChangeEvent;)V+2
+j  javax.swing.plaf.metal.MetalFileChooserUI$5.propertyChange(Ljava/beans/PropertyChangeEvent;)V+59
+J  java.beans.PropertyChangeSupport.firePropertyChange(Ljava/beans/PropertyChangeEvent;)V
+J  java.beans.PropertyChangeSupport.firePropertyChange(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V
+J  java.awt.Component.firePropertyChange(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V
+j  javax.swing.JFileChooser.setCurrentDirectory(Ljava/io/File;)V+94
+j  javax.swing.JFileChooser.<init>(Ljava/lang/String;Ljavax/swing/filechooser/FileSystemView;)V+157
+j  javax.swing.JFileChooser.<init>(Ljava/lang/String;)V+6
+j  com.gsom.images.ui.resources.ImageLocationAndNodeSelector.jButton1ActionPerformed(Ljava/awt/event/ActionEvent;)V+6
+j  com.gsom.images.ui.resources.ImageLocationAndNodeSelector.access$000(Lcom/gsom/images/ui/resources/ImageLocationAndNodeSelector;Ljava/awt/event/ActionEvent;)V+2
+j  com.gsom.images.ui.resources.ImageLocationAndNodeSelector$1.actionPerformed(Ljava/awt/event/ActionEvent;)V+5
+j  javax.swing.AbstractButton.fireActionPerformed(Ljava/awt/event/ActionEvent;)V+84
+j  javax.swing.AbstractButton$Handler.actionPerformed(Ljava/awt/event/ActionEvent;)V+5
+j  javax.swing.DefaultButtonModel.fireActionPerformed(Ljava/awt/event/ActionEvent;)V+35
+j  javax.swing.DefaultButtonModel.setPressed(Z)V+117
+j  javax.swing.plaf.basic.BasicButtonListener.mouseReleased(Ljava/awt/event/MouseEvent;)V+35
+j  java.awt.Component.processMouseEvent(Ljava/awt/event/MouseEvent;)V+64
+j  javax.swing.JComponent.processMouseEvent(Ljava/awt/event/MouseEvent;)V+23
+J  java.awt.Component.processEvent(Ljava/awt/AWTEvent;)V
+J  java.awt.Container.processEvent(Ljava/awt/AWTEvent;)V
+J  java.awt.Component.dispatchEventImpl(Ljava/awt/AWTEvent;)V
+J  java.awt.Container.dispatchEventImpl(Ljava/awt/AWTEvent;)V
+J  java.awt.LightweightDispatcher.retargetMouseEvent(Ljava/awt/Component;ILjava/awt/event/MouseEvent;)V
+J  java.awt.LightweightDispatcher.processMouseEvent(Ljava/awt/event/MouseEvent;)Z
+J  java.awt.LightweightDispatcher.dispatchEvent(Ljava/awt/AWTEvent;)Z
+J  java.awt.Container.dispatchEventImpl(Ljava/awt/AWTEvent;)V
+J  java.awt.Window.dispatchEventImpl(Ljava/awt/AWTEvent;)V
+J  java.awt.EventQueue.dispatchEvent(Ljava/awt/AWTEvent;)V
+J  java.awt.EventDispatchThread.pumpOneEventForFilters(I)Z
+J  java.awt.EventDispatchThread.pumpEventsForFilter(ILjava/awt/Conditional;Ljava/awt/EventFilter;)V
+j  java.awt.EventDispatchThread.pumpEventsForHierarchy(ILjava/awt/Conditional;Ljava/awt/Component;)V+11
+j  java.awt.EventDispatchThread.pumpEvents(ILjava/awt/Conditional;)V+4
+j  java.awt.EventDispatchThread.pumpEvents(Ljava/awt/Conditional;)V+3
+j  java.awt.EventDispatchThread.run()V+9
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+=>0x04fd6c00 JavaThread "AWT-EventQueue-0" [_thread_in_native, id=6976]
+  0x05046c00 JavaThread "TimerQueue" daemon [_thread_blocked, id=6200]
+  0x001f7c00 JavaThread "DestroyJavaVM" [_thread_blocked, id=4540]
+  0x041cdc00 JavaThread "AWT-Windows" daemon [_thread_in_native, id=6224]
+  0x041cd400 JavaThread "AWT-Shutdown" [_thread_blocked, id=5360]
+  0x041cd000 JavaThread "Java2D Disposer" daemon [_thread_blocked, id=3260]
+  0x0413ac00 JavaThread "Low Memory Detector" daemon [_thread_blocked, id=6300]
+  0x04135c00 JavaThread "CompilerThread0" daemon [_thread_blocked, id=5624]
+  0x04135400 JavaThread "Attach Listener" daemon [_thread_blocked, id=6900]
+  0x04135000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=4580]
+  0x040f7000 JavaThread "Finalizer" daemon [_thread_blocked, id=6828]
+  0x040f1c00 JavaThread "Reference Handler" daemon [_thread_blocked, id=6820]
+
+Other Threads:
+  0x040e8800 VMThread [id=2540]
+  0x0413c400 WatcherThread [id=3908]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ def new generation   total 2304K, used 1378K [0x242e0000, 0x24560000, 0x247c0000)
+  eden space 2048K,  61% used [0x242e0000, 0x2441b3a0, 0x244e0000)
+  from space 256K,  45% used [0x24520000, 0x2453d608, 0x24560000)
+  to   space 256K,   0% used [0x244e0000, 0x244e0000, 0x24520000)
+ tenured generation   total 30040K, used 11253K [0x247c0000, 0x26516000, 0x282e0000)
+   the space 30040K,  37% used [0x247c0000, 0x252bd590, 0x252bd600, 0x26516000)
+ compacting perm gen  total 12288K, used 1849K [0x282e0000, 0x28ee0000, 0x2c2e0000)
+   the space 12288K,  15% used [0x282e0000, 0x284ae5c0, 0x284ae600, 0x28ee0000)
+    ro space 8192K,  66% used [0x2c2e0000, 0x2c829920, 0x2c829a00, 0x2cae0000)
+    rw space 12288K,  52% used [0x2cae0000, 0x2d126130, 0x2d126200, 0x2d6e0000)
+
+Dynamic libraries:
+0x00400000 - 0x00423000 	C:\Program Files (x86)\Java\jdk1.6.0\bin\java.exe
+0x774c0000 - 0x77617000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x74bb0000 - 0x74ce0000 	C:\WINDOWS\SYSTEM32\KERNEL32.DLL
+0x74dc0000 - 0x74e66000 	C:\WINDOWS\SYSTEM32\KERNELBASE.dll
+0x71c40000 - 0x71ce7000 	C:\WINDOWS\system32\apphelp.dll
+0x74e70000 - 0x74f1e000 	C:\WINDOWS\SYSTEM32\ADVAPI32.dll
+0x74ce0000 - 0x74d91000 	C:\WINDOWS\SYSTEM32\msvcrt.dll
+0x74b70000 - 0x74ba4000 	C:\WINDOWS\SYSTEM32\sechost.dll
+0x75340000 - 0x753ec000 	C:\WINDOWS\SYSTEM32\RPCRT4.dll
+0x74b50000 - 0x74b6c000 	C:\WINDOWS\SYSTEM32\SspiCli.dll
+0x74b40000 - 0x74b49000 	C:\WINDOWS\SYSTEM32\CRYPTBASE.dll
+0x74ae0000 - 0x74b31000 	C:\WINDOWS\SYSTEM32\bcryptPrimitives.dll
+0x7c340000 - 0x7c396000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\msvcr71.dll
+0x6d7c0000 - 0x6da07000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\client\jvm.dll
+0x75870000 - 0x75986000 	C:\WINDOWS\SYSTEM32\USER32.dll
+0x71ad0000 - 0x71af1000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x75720000 - 0x7581d000 	C:\WINDOWS\SYSTEM32\GDI32.dll
+0x71aa0000 - 0x71aca000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x74da0000 - 0x74dc0000 	C:\WINDOWS\system32\IMM32.DLL
+0x77170000 - 0x7724d000 	C:\WINDOWS\SYSTEM32\MSCTF.dll
+0x6d310000 - 0x6d318000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\hpi.dll
+0x75650000 - 0x75656000 	C:\WINDOWS\SYSTEM32\PSAPI.DLL
+0x6d770000 - 0x6d77c000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\verify.dll
+0x6d3b0000 - 0x6d3cf000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\java.dll
+0x6d7b0000 - 0x6d7bf000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\zip.dll
+0x6d000000 - 0x6d1c3000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\awt.dll
+0x71b00000 - 0x71b60000 	C:\WINDOWS\SYSTEM32\WINSPOOL.DRV
+0x753f0000 - 0x75509000 	C:\WINDOWS\SYSTEM32\ole32.dll
+0x75b90000 - 0x75cc6000 	C:\WINDOWS\SYSTEM32\combase.dll
+0x66a10000 - 0x66c54000 	C:\WINDOWS\AppPatch\AcGenral.DLL
+0x74f30000 - 0x74f70000 	C:\WINDOWS\SYSTEM32\SHLWAPI.dll
+0x71ee0000 - 0x71f68000 	C:\WINDOWS\SYSTEM32\UxTheme.dll
+0x71760000 - 0x71772000 	C:\WINDOWS\SYSTEM32\samcli.dll
+0x755c0000 - 0x7564b000 	C:\WINDOWS\SYSTEM32\OLEAUT32.dll
+0x66710000 - 0x66724000 	C:\WINDOWS\SYSTEM32\MSACM32.dll
+0x744e0000 - 0x744e8000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x760a0000 - 0x77166000 	C:\WINDOWS\SYSTEM32\SHELL32.dll
+0x74ab0000 - 0x74acb000 	C:\WINDOWS\SYSTEM32\USERENV.dll
+0x72320000 - 0x72339000 	C:\WINDOWS\SYSTEM32\dwmapi.dll
+0x75f80000 - 0x760a0000 	C:\WINDOWS\SYSTEM32\urlmon.dll
+0x744a0000 - 0x744b3000 	C:\WINDOWS\SYSTEM32\MPR.dll
+0x74a90000 - 0x74aa1000 	C:\WINDOWS\SYSTEM32\profapi.dll
+0x75990000 - 0x75b31000 	C:\WINDOWS\SYSTEM32\iertutil.dll
+0x75d50000 - 0x75f09000 	C:\WINDOWS\SYSTEM32\WININET.dll
+0x72f20000 - 0x72f95000 	C:\WINDOWS\SYSTEM32\SHCORE.DLL
+0x6d2b0000 - 0x6d303000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\fontmanager.dll
+0x6d570000 - 0x6d583000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\net.dll
+0x75b40000 - 0x75b90000 	C:\WINDOWS\SYSTEM32\WS2_32.dll
+0x74f20000 - 0x74f28000 	C:\WINDOWS\SYSTEM32\NSI.dll
+0x74680000 - 0x746ca000 	C:\WINDOWS\system32\mswsock.dll
+0x6d590000 - 0x6d599000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\nio.dll
+0x75cd0000 - 0x75d44000 	C:\WINDOWS\SYSTEM32\clbcatq.dll
+0x75130000 - 0x751b7000 	C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_5.82.9200.16384_none_bf100cd445f4d954\comctl32.dll
+0x74f70000 - 0x7511f000 	C:\WINDOWS\SYSTEM32\SETUPAPI.dll
+0x75f10000 - 0x75f56000 	C:\WINDOWS\SYSTEM32\CFGMGR32.dll
+0x75510000 - 0x7552e000 	C:\WINDOWS\SYSTEM32\DEVOBJ.dll
+0x71430000 - 0x71549000 	C:\WINDOWS\system32\propsys.dll
+0x56f80000 - 0x57118000 	C:\WINDOWS\system32\NetworkExplorer.dll
+0x70430000 - 0x70438000 	C:\WINDOWS\System32\drprov.dll
+0x74a50000 - 0x74a8e000 	C:\WINDOWS\System32\WINSTA.dll
+0x70420000 - 0x7042f000 	C:\WINDOWS\System32\ntlanman.dll
+0x55ea0000 - 0x55eb9000 	C:\WINDOWS\System32\davclnt.dll
+0x665f0000 - 0x665f9000 	C:\WINDOWS\System32\DAVHLPR.dll
+0x71e60000 - 0x71e70000 	C:\WINDOWS\SYSTEM32\wkscli.dll
+0x71e50000 - 0x71e5e000 	C:\WINDOWS\SYSTEM32\cscapi.dll
+0x71e90000 - 0x71e9b000 	C:\WINDOWS\SYSTEM32\netutils.dll
+0x66630000 - 0x66639000 	C:\WINDOWS\SYSTEM32\LINKINFO.dll
+0x6adf0000 - 0x6ae23000 	C:\WINDOWS\System32\shdocvw.dll
+0x6d1f0000 - 0x6d21f000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\cmm.dll
+0x6d450000 - 0x6d474000 	C:\Program Files (x86)\Java\jdk1.6.0\jre\bin\jpeg.dll
+
+VM Arguments:
+jvm_args: -Dfile.encoding=UTF-8
+java_command: com.gsom.ui.MainWindow
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jre7
+CLASSPATH=.;C:\Program Files (x86)\Java\jre7\lib\ext\QTJava.zip
+PATH=C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files\Java\jre7\bin;C:\Program Files\Java\jdk1.7.0_09\bin;C:\Apache\apache-ant-1.8.4\bin;c:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\;c:\Program Files\Microsoft SQL Server\100\Tools\Binn\;c:\Program Files\Microsoft SQL Server\100\DTS\Binn\
+USERNAME=Thush
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 42 Stepping 7, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows NT 6.2 Build 9200 
+
+CPU:total 4 family 6, cmov, cx8, fxsr, mmx, sse, sse2
+
+Memory: 4k page, physical 4194303k(3336300k free), swap 4194303k(3991512k free)
+
+vm_info: Java HotSpot(TM) Client VM (1.6.0-b105) for windows-x86, built on Nov 29 2006 00:48:48 by "java_re" with unknown MS VC++:1310
+

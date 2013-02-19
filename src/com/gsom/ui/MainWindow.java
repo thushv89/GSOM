@@ -215,7 +215,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
             }
         });
 
-        jTextField5.setText("400");
+        jTextField5.setText("100");
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField5ActionPerformed(evt);

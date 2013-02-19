@@ -179,7 +179,7 @@ public class ImageLocationAndNodeSelector extends javax.swing.JFrame {
         StartApp run = new StartApp();
         Values.REQUIRED_GSOM_NODE = jTextField2.getText();
         try {
-            run.readFile(new File("map/output.txt"));
+            run.readFile(new File("output.txt"));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ImageLocationAndNodeSelector.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
