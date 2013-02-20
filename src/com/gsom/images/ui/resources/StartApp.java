@@ -4,7 +4,6 @@
  */
 package com.gsom.images.ui.resources;
 
-import com.gsom.images.ui.resources.Values;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.BufferedReader;
@@ -16,9 +15,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+
 
 /**
  *
@@ -33,7 +31,7 @@ public class StartApp {
         int count = 0;
 
         // To hold key and values
-        String[] vals = new String[2];
+        String[] vals;
 
         while ((line = br.readLine()) != null) {
 
@@ -45,7 +43,6 @@ public class StartApp {
         }
 
         Values.map = map;
-        System.out.println("> " + Values.map.size() + " lines were scanned");
 
         br.close();
     }
