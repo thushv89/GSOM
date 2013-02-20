@@ -1,5 +1,6 @@
 package com.gsom.util;
 
+import com.gsom.util.input.parsing.GSOMConstants;
 import java.util.Map;
 
 import com.gsom.objects.GNode;
@@ -82,6 +83,7 @@ public class Utils {
 
     public static double calcChamDistance(double[] vec1, double[] vec2) {
 
+        double threshold = 0.005;
         double minVal;
         double totalMinval = 0.0;
         for (double val1 : vec1) {
@@ -90,6 +92,9 @@ public class Utils {
             for (double val2 : vec2) {
                 if (Math.abs(val1 - val2) < minVal) {
                     minVal = Math.abs(val1 - val2);
+                    if(minVal<threshold){
+                        break;
+                    }
                 }
             }
             totalMinval += minVal;

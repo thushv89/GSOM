@@ -7,7 +7,7 @@ package com.gsom.core;
 import com.gsom.listeners.ClusteringListener;
 import com.gsom.objects.GCluster;
 import com.gsom.objects.GNode;
-import com.gsom.util.GSOMConstants;
+import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.util.Utils;
 import java.util.*;
 

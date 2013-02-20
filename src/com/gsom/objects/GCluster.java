@@ -4,7 +4,7 @@
  */
 package com.gsom.objects;
 
-import com.gsom.util.GSOMConstants;
+import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.util.Utils;
 import java.util.ArrayList;
 import java.util.Map;

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gsom.util;
+package com.gsom.util.input.parsing;
 
 import com.gsom.listeners.InputParsedListener;
 import java.io.BufferedReader;
@@ -14,12 +14,12 @@ import java.io.IOException;
  *
  * @author Thush
  */
-public class AshesDataParser extends InputParser{
+public class TextureProportionDataParser extends InputParser{
     
     public void parseInput(InputParsedListener iListener,String fileName){
 
 		String tokenizer=",";
-		int numOfDimensions = 13;
+		int numOfDimensions = 5;
                 GSOMConstants.DIMENSIONS = numOfDimensions;
 
 		try {
@@ -39,7 +39,7 @@ public class AshesDataParser extends InputParser{
 						strForWeights.add(tokens[0]);
 						double[] weightArr = new double[numOfDimensions];
 						for(int j=1;j<tokens.length;j++){
-							weightArr[j-1]=Float.parseFloat(tokens[j]);
+							weightArr[j-1]=Double.parseDouble(tokens[j]);
 						}
 						weights.add(weightArr);
 					}					
@@ -50,7 +50,6 @@ public class AshesDataParser extends InputParser{
 				super.normalizeData(weights, numOfDimensions);
 				iListener.inputParseComplete(); //trigger inputParseComplete event
 			}
-                        
 		}
 		catch (IOException ex){
 			ex.printStackTrace();

@@ -1,4 +1,4 @@
-package com.gsom.util;
+package com.gsom.util.input.parsing;
 
 import org.jfree.date.SpreadsheetDate;
 

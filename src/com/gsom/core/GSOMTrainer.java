@@ -7,7 +7,7 @@ import java.util.Map;
 import com.gsom.listeners.GSOMTrainerListener;
 import com.gsom.listeners.NodeGrowthListener;
 import com.gsom.objects.GNode;
-import com.gsom.util.GSOMConstants;
+import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.util.Utils;
 
 

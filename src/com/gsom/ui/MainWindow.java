@@ -10,7 +10,7 @@ import com.gsom.images.ui.resources.ImageLocationAndNodeSelector;
 import com.gsom.listeners.GSOMRunListener;
 import com.gsom.objects.GCluster;
 import com.gsom.objects.GNode;
-import com.gsom.util.GSOMConstants;
+import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.util.Utils;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;

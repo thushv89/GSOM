@@ -26,20 +26,6 @@ import javax.swing.JPanel;
  */
 public class StartApp {
 
-//    public static void show() throws IOException {
-//       //
-//        File file = new File(Values.INPUT_FILE_LOCATION);    //"D:\\MyProjects\\FYP\\MPEG_7\\out\\GSOM_out_proportion.txt");
-//        readFile(file);
-//        JPanel panel = new JPanel();
-//        JFrame frame = new JFrame("Feature Extraction Viewer v0.1");
-//        //panel.add(getThubnailImage(img,file));
-//        frame.add(panel);
-//        //frame.setDefaultLookAndFeelDecorated(true);
-//        frame.setSize(400, 400);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
-//    }
     public static void readFile(File inputFile) throws FileNotFoundException, IOException {
         BufferedReader br = new BufferedReader(new FileReader(inputFile));
         String line = null;

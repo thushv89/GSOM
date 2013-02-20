@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gsom.util;
+package com.gsom.util.input.parsing;
 
 import com.gsom.listeners.InputParsedListener;
 import java.io.BufferedReader;
@@ -14,12 +14,12 @@ import java.io.IOException;
  *
  * @author Thush
  */
-public class LetterDataParser extends InputParser{
+public class ChrimeDataParser extends InputParser{
     
     public void parseInput(InputParsedListener iListener,String fileName){
 
 		String tokenizer=",";
-		int numOfDimensions = 16;
+		int numOfDimensions = 10;
                 GSOMConstants.DIMENSIONS = numOfDimensions;
 
 		try {

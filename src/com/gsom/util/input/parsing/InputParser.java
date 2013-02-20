@@ -1,10 +1,11 @@
-package com.gsom.util;
+package com.gsom.util.input.parsing;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import com.gsom.listeners.InputParsedListener;
+import com.gsom.util.ArrayHelper;
 import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;

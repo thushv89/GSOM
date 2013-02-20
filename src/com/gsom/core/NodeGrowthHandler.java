@@ -7,7 +7,7 @@ import javax.rmi.CORBA.Util;
 import com.gsom.listeners.NodeGrowthListener;
 import com.gsom.objects.GNode;
 import com.gsom.util.ArrayHelper;
-import com.gsom.util.GSOMConstants;
+import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.util.Utils;
 
 public class NodeGrowthHandler {

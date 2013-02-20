@@ -38,9 +38,6 @@ public class ImageViewer extends javax.swing.JFrame {
         jButton1.setText("Save");
         Image imge = null;
         File file = null;
-        JPanel imageContainer = new JPanel();
-
-        // jScrollPane1.setSize(800,400);//.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setViewportView(jPanel2);
 
 
@@ -48,7 +45,6 @@ public class ImageViewer extends javax.swing.JFrame {
         // button in the main window
         HashMap<String, String> map = Values.map;
 
-        //jPanel2.setLayout(new GridLayout(8, 7));
 
         if (map.containsKey(Values.REQUIRED_GSOM_NODE)) {
             String[] images = map.get(Values.REQUIRED_GSOM_NODE).split(",");
@@ -68,11 +64,8 @@ public class ImageViewer extends javax.swing.JFrame {
             }
         }
 
-        //imageContainer.add(forImage);
+        
         jPanel2.add(forImage);
-//add(imageContainer);
-        //jScrollPane1.add(imageContainer);
-        //add(jScrollPane1);
         setSize(876, 524);
         setTitle("Feature Extraction Viewer");
         setLocationRelativeTo(null);

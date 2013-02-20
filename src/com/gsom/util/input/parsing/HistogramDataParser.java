@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gsom.util;
+package com.gsom.util.input.parsing;
 
 import com.gsom.listeners.InputParsedListener;
 import java.io.BufferedReader;
@@ -14,12 +14,12 @@ import java.io.IOException;
  *
  * @author Thush
  */
-public class MachineDataParser extends InputParser{
+public class HistogramDataParser extends InputParser{
     
     public void parseInput(InputParsedListener iListener,String fileName){
 
 		String tokenizer=",";
-		int numOfDimensions = 8;
+		int numOfDimensions = 5;
                 GSOMConstants.DIMENSIONS = numOfDimensions;
 
 		try {
@@ -35,11 +35,11 @@ public class MachineDataParser extends InputParser{
 					if(text!=null && text.length()>0){
 						String[] tokens = text.split(tokenizer);
                                                 
-                                                String name = tokens[0]+"-"+tokens[1];
-						strForWeights.add(name);
+                                                
+						strForWeights.add(tokens[0]);
 						double[] weightArr = new double[numOfDimensions];
-						for(int j=2;j<tokens.length-1;j++){
-							weightArr[j-2]=Integer.parseInt(tokens[j]);
+						for(int j=1;j<tokens.length;j++){
+							weightArr[j-1]=Integer.parseInt(tokens[j]);  
 						}
 						weights.add(weightArr);
 					}					
