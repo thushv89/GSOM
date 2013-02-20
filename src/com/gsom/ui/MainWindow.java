@@ -7,9 +7,14 @@ package com.gsom.ui;
 import com.gsom.core.GSOMRun;
 import com.gsom.enums.InputDataType;
 import com.gsom.images.ui.resources.ImageLocationAndNodeSelector;
+import com.gsom.images.ui.resources.UIHelper;
 import com.gsom.listeners.GSOMRunListener;
 import com.gsom.objects.GCluster;
 import com.gsom.objects.GNode;
+import com.gsom.ui.image_ui.ImageNetworkController;
+import com.gsom.ui.image_ui.ImageNetworkHelper;
+import com.gsom.ui.image_ui.ImageNetworkViewer;
+import com.gsom.ui.image_ui.UIValues;
 import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.util.Utils;
 import com.sun.image.codec.jpeg.JPEGCodec;
@@ -26,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
@@ -47,6 +53,7 @@ import sun.misc.Launcher;
 public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
 
     public static int distance;
+
     /**
      * Creates new form MainWindow
      */
@@ -157,7 +164,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        fileLocationTextBox = new javax.swing.JTextField();
+        InputFileLocationTextBox = new javax.swing.JTextField();
         fileTypeCombo = new javax.swing.JComboBox();
         browseButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
@@ -167,6 +174,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
         jDistance = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("GSOM Main view");
         setResizable(false);
 
         trainButton.setText("Train GSOM");
@@ -302,7 +310,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                                 .addComponent(jLabel4))
-                            .addComponent(fileLocationTextBox, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE))
+                            .addComponent(InputFileLocationTextBox, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -327,7 +335,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fileLocationTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(InputFileLocationTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(browseButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -372,12 +380,12 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
         GSOMConstants.START_LEARNING_RATE = Double.parseDouble(jTextField4.getText());
         GSOMConstants.MAX_ITERATIONS = Integer.parseInt(jTextField5.getText());
         if (jDistance.getSelectedIndex() == 0) {
-            distance = 0;       
+            distance = 0;
         } else {
             distance = 1;
         }
         gRun = new GSOMRun(this);
-        gRun.runTraining(fileLocationTextBox.getText(), (String) fileTypeCombo.getSelectedItem());
+        gRun.runTraining(InputFileLocationTextBox.getText(), (String) fileTypeCombo.getSelectedItem());
 //        for(InputDataType i : InputDataType.values()){
 //        fileTypeCombo.addItem(i.toString());
 //        }
@@ -409,7 +417,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
-        JFileChooser chooser = new JFileChooser("E:\\GSOM2_v3\\GSOM2\\");//E:\GSOM2_v3\GSOM2
+        JFileChooser chooser = new JFileChooser(".");//E:\GSOM2_v3\GSOM2
 
         int choice = chooser.showOpenDialog(null);
 
@@ -419,22 +427,20 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
 
         File chosenFile = chooser.getSelectedFile();
         //JOptionPane.showMessageDialog(null,chosenFile.getAbsolutePath());
-        fileLocationTextBox.setText(chosenFile.getAbsolutePath());
+        InputFileLocationTextBox.setText(chosenFile.getAbsolutePath());
 
     }//GEN-LAST:event_browseButtonActionPerformed
 
     private void fileTypeComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileTypeComboActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fileTypeComboActionPerformed
+    private ImageNetworkController imgNetController;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-//    FeatureExtractionViewerApp featureExtractionViewerApp = new FeatureExtractionViewerApp();
-//    featureExtractionViewerApp.getInstance();
-
-        ImageLocationAndNodeSelector imageLocationAndNodeSelector = new ImageLocationAndNodeSelector();
-        imageLocationAndNodeSelector.setVisible(true);
+        imgNetController = new ImageNetworkController();
+        imgNetController.displayView();
     }//GEN-LAST:event_jButton1ActionPerformed
+    
     private GSOMRun gRun;
 
     /**
@@ -507,14 +513,12 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
         ArrayList<XYSeries> seriesSet = new ArrayList<XYSeries>();
 
         /*
-        // identify non-hit nodes first
-        XYSeries nonHitSeries = new XYSeries("Non-hit nodes");
-        for(GNode node : map.values()){
-        if(!testResults.containsKey(Utils.generateIndexString(node.getX(), node.getY()))){
-        nonHitSeries.add(node.getX(),node.getY());
-        }
-        }
-        seriesSet.add(nonHitSeries);*/
+         * // identify non-hit nodes first XYSeries nonHitSeries = new
+         * XYSeries("Non-hit nodes"); for(GNode node : map.values()){
+         * if(!testResults.containsKey(Utils.generateIndexString(node.getX(),
+         * node.getY()))){ nonHitSeries.add(node.getX(),node.getY()); } }
+        seriesSet.add(nonHitSeries);
+         */
 
         int idx = 0;
         for (GCluster cluster : clusters) {
@@ -629,8 +633,8 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField InputFileLocationTextBox;
     private javax.swing.JButton browseButton;
-    private javax.swing.JTextField fileLocationTextBox;
     private javax.swing.JComboBox fileTypeCombo;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jDistance;

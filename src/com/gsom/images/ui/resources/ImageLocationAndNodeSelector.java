@@ -11,6 +11,7 @@
 
 package com.gsom.images.ui.resources;
 
+//import com.gsom.ui.image_ui.UIValues;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -160,7 +161,7 @@ public class ImageLocationAndNodeSelector extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       JFileChooser chooser = new JFileChooser("D:\\MyProjects\\FYP\\MPEG_7\\li_photograph\\image.cd\\");
+       JFileChooser chooser = new JFileChooser(".");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int choice = chooser.showOpenDialog(null);
 
@@ -171,13 +172,13 @@ public class ImageLocationAndNodeSelector extends javax.swing.JFrame {
         File chosenFile = chooser.getSelectedFile();
         //JOptionPane.showMessageDialog(null,chosenFile.getAbsolutePath());
         jTextField1.setText(chosenFile.getAbsolutePath());
-        Values.IMAGE_FOLDER_LOCATION = chosenFile.getAbsolutePath();
+       // UIValues.IMAGE_FOLDER_LOCATION = chosenFile.getAbsolutePath();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        StartApp run = new StartApp();
-        Values.REQUIRED_GSOM_NODE = jTextField2.getText();
+        UIHelper run = new UIHelper();
+       // UIValues.REQUIRED_GSOM_NODE = jTextField2.getText();
         try {
             run.readFile(new File("output.txt"));
         } catch (FileNotFoundException ex) {

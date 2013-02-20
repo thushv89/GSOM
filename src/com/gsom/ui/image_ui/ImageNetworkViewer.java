@@ -4,6 +4,21 @@
  */
 package com.gsom.ui.image_ui;
 
+import com.gsom.ui.image_ui.listeners.ImageNetworkViewerListener;
+import java.awt.Color;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
 /**
  *
  * @author Thush
@@ -15,8 +30,63 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
      */
     public ImageNetworkViewer() {
         initComponents();
+
+        // Set the Main window's size
+        setSize(600, 520);
+        setLocationRelativeTo(null);
     }
 
+    public void viewGrid(ImageNetworkModel model) {
+        //System.out.println(">> " + UIValues.getINPUT_FILE_LOCATION());
+
+        Map<String, ArrayList<String>> map = model.getHitAndImageMap();
+        String recreatedKey = "";
+        File file = null;
+        Image image = null;
+        String firstFileName;
+
+        // Set the scrollpane viewport
+        gridScrollPane.setViewportView(gridHolderPanel);
+        // Set a grid layout in gridholderPanel
+        gridHolderPanel.setLayout(new GridLayout(UIValues.getXGridCount(), UIValues.getYGridCount()));
+
+
+        JLabel[][] cells = new JLabel[UIValues.getXGridCount()][UIValues.getYGridCount()];
+        System.out.println("UGX: " + UIValues.getXGridCount() + " " + UIValues.getYGridCount());
+        for (int ix = 0, xx = UIValues.getX_MIN(); ix < UIValues.getXGridCount(); ix++, xx++) {
+            for (int iy = 0, yy = UIValues.getYMIN(); iy < UIValues.getYGridCount(); iy++, yy++) {
+                //System.out.print("(" + ix + "," + iy + ") ");
+                recreatedKey = xx + "," + yy;
+                if (map.containsKey(recreatedKey)) {
+                    //fileNames = map.get(recreatedKey); -- thush
+                    firstFileName = map.get(recreatedKey).get(0);
+                    //firstFileName = fileNames.split(",")[0]; -- thush
+                    //System.out.println(fileNames);
+                    file = new File(UIValues.getIMAGE_FOLDER_LOCATION() + "\\" + firstFileName + ".jpg");
+
+                    try {
+                        image = ImageIO.read(file).getScaledInstance(80, 80, BufferedImage.SCALE_SMOOTH);
+                        cells[ix][iy] = getThubnailImage(image);
+
+                    } catch (IOException ex) {
+                        Logger.getLogger(ImageNetworkViewer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    cells[ix][iy] = new JLabel("");
+                }
+                gridHolderPanel.add(cells[ix][iy]);
+            }
+        }
+        System.out.println("> " + UIValues.getXGridCount() + " - " + UIValues.getYGridCount());
+    }
+
+    private JLabel getThubnailImage(Image img) {
+        JLabel label = new JLabel();
+        label.setLayout(new GridLayout(2, 1));
+        label.setIcon(new ImageIcon(img));
+        label.setBorder(BorderFactory.createLineBorder(Color.black));
+        return label;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,67 +96,286 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        mainPanel = new javax.swing.JPanel();
+        dynamicGrid = new javax.swing.JPanel();
+        gridScrollPane = new javax.swing.JScrollPane();
+        gridHolderPanel = new javax.swing.JPanel();
+        buttonPanel = new javax.swing.JPanel();
+        imgDirInputTextField = new javax.swing.JTextField();
+        imgDirBrowseBtn = new javax.swing.JButton();
+        outputFileTxt = new javax.swing.JTextField();
+        outFileBrowser = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        closeBtn = new javax.swing.JButton();
+        infoLbl = new javax.swing.JLabel();
+        viewGridBtn = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Dynamic Grid Viewer");
+        getContentPane().setLayout(null);
+
+        mainPanel.setBackground(new java.awt.Color(204, 204, 255));
+        mainPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        javax.swing.GroupLayout gridHolderPanelLayout = new javax.swing.GroupLayout(gridHolderPanel);
+        gridHolderPanel.setLayout(gridHolderPanelLayout);
+        gridHolderPanelLayout.setHorizontalGroup(
+            gridHolderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 552, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        gridHolderPanelLayout.setVerticalGroup(
+            gridHolderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 334, Short.MAX_VALUE)
         );
+
+        gridScrollPane.setViewportView(gridHolderPanel);
+
+        javax.swing.GroupLayout dynamicGridLayout = new javax.swing.GroupLayout(dynamicGrid);
+        dynamicGrid.setLayout(dynamicGridLayout);
+        dynamicGridLayout.setHorizontalGroup(
+            dynamicGridLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dynamicGridLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(gridScrollPane)
+                .addContainerGap())
+        );
+        dynamicGridLayout.setVerticalGroup(
+            dynamicGridLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dynamicGridLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(gridScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        mainPanel.add(dynamicGrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 98, -1, 350));
+
+        imgDirBrowseBtn.setText("Browse");
+        imgDirBrowseBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imgDirBrowseBtnActionPerformed(evt);
+            }
+        });
+
+        outputFileTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outputFileTxtActionPerformed(evt);
+            }
+        });
+
+        outFileBrowser.setText("Browse");
+        outFileBrowser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outFileBrowserActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Output File :");
+
+        jLabel2.setText("Image Folder :");
+
+        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(outputFileTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                    .addComponent(imgDirInputTextField))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(imgDirBrowseBtn)
+                    .addComponent(outFileBrowser))
+                .addGap(31, 31, 31))
+        );
+        buttonPanelLayout.setVerticalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(outputFileTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(outFileBrowser)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(imgDirInputTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(imgDirBrowseBtn)
+                    .addComponent(jLabel2))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
+        mainPanel.add(buttonPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 570, 80));
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        closeBtn.setText("Close");
+        closeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeBtnActionPerformed(evt);
+            }
+        });
+
+        infoLbl.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        infoLbl.setForeground(new java.awt.Color(255, 0, 51));
+        infoLbl.setText("Please browse the related image directory");
+
+        viewGridBtn.setText("View Image Grid");
+        viewGridBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewGridBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(infoLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addComponent(viewGridBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(closeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(infoLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(closeBtn)
+                    .addComponent(viewGridBtn))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
+        mainPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, 570, 50));
+
+        getContentPane().add(mainPanel);
+        mainPanel.setBounds(0, 10, 590, 490);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void setModel(ImageNetworkModel model){
-    
+    private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
+        
+    }//GEN-LAST:event_closeBtnActionPerformed
+
+    ImageNetworkViewerListener listener;
+    public void setImageNetworkViewerListener(ImageNetworkViewerListener listener){
+        this.listener = listener;
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ImageNetworkViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ImageNetworkViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ImageNetworkViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ImageNetworkViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void imgDirBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imgDirBrowseBtnActionPerformed
+        JFileChooser chooser = new JFileChooser("D:\\MyProjects\\FYP\\MPEG_7\\");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int choice = chooser.showOpenDialog(null);
+
+        if (choice != JFileChooser.APPROVE_OPTION) {
+            return;
         }
-        //</editor-fold>
 
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        
+        //JOptionPane.showMessageDialog(null,chosenFile.getAbsolutePath());
+        imgDirInputTextField.setText(chooser.getSelectedFile().getAbsolutePath());
+        //UIValues.setIMAGE_FOLDER_LOCATION(chosenFile.getAbsolutePath()); -thush
+        infoLbl.setVisible(false);
+        
+        
+        
 
-            public void run() {
-                new ImageNetworkViewer().setVisible(true);
-            }
-        });
+    }//GEN-LAST:event_imgDirBrowseBtnActionPerformed
+
+    private void outFileBrowserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outFileBrowserActionPerformed
+        JFileChooser chooser = new JFileChooser("D:\\MyProjects\\FYP\\MPEG_7\\");
+        int choice = chooser.showOpenDialog(null);
+
+        if (choice != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        outputFileTxt.setText(chooser.getSelectedFile().getAbsolutePath());
+
+    }//GEN-LAST:event_outFileBrowserActionPerformed
+
+    private void outputFileTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outputFileTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_outputFileTxtActionPerformed
+
+    private void viewGridBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewGridBtnActionPerformed
+        String imgFolder = imgDirInputTextField.getText();
+        String outputFile = outputFileTxt.getText();
+        
+        listener.readyToCalc(outputFile,imgFolder);
+        
+        
+    }//GEN-LAST:event_viewGridBtnActionPerformed
+
+    public void populateAndView(ImageNetworkModel model) {
+        viewGrid(model);
     }
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /*
+//         * Set the Nimbus look and feel
+//         */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /*
+//         * If Nimbus (introduced in Java SE 6) is not available, stay with the
+//         * default look and feel. For details see
+//         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(ImageNetworkViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(ImageNetworkViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(ImageNetworkViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(ImageNetworkViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /*
+//         * Create and display the form
+//         */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//
+//            public void run() {
+//                new ImageNetworkViewer().setVisible(true);
+//            }
+//        });
+//    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JButton closeBtn;
+    private javax.swing.JPanel dynamicGrid;
+    private javax.swing.JPanel gridHolderPanel;
+    private javax.swing.JScrollPane gridScrollPane;
+    private javax.swing.JButton imgDirBrowseBtn;
+    private javax.swing.JTextField imgDirInputTextField;
+    private javax.swing.JLabel infoLbl;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JButton outFileBrowser;
+    private javax.swing.JTextField outputFileTxt;
+    private javax.swing.JButton viewGridBtn;
     // End of variables declaration//GEN-END:variables
 }

@@ -147,7 +147,7 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
         }
         listener.stepCompleted("Goodness of the Map : " + totalErrorValue / map.size());
         runTesting(map, parser.getWeights(), parser.getStrForWeights());
-        clusterer.runClustering(map, this);
+        //clusterer.runClustering(map, this);
     }
 
     @Override

@@ -18,12 +18,11 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-
 /**
  *
  * @author Ruchira
  */
-public class StartApp {
+public class UIHelper {
 
     public static void readFile(File inputFile) throws FileNotFoundException, IOException {
         BufferedReader br = new BufferedReader(new FileReader(inputFile));
@@ -32,7 +31,7 @@ public class StartApp {
         int count = 0;
 
         // To hold key and values
-        String[] vals;
+        String[] vals = new String[2];
 
         while ((line = br.readLine()) != null) {
 
@@ -43,7 +42,8 @@ public class StartApp {
             count++;
         }
 
-      //  UIValues.map = map;
+//        UIValues.map = map;
+//        System.out.println("> " + UIValues.map.size() + " lines were scanned");
 
         br.close();
     }

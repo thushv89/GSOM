@@ -10,6 +10,7 @@
  */
 package com.gsom.images.ui.resources;
 
+//import com.gsom.ui.image_ui.UIValues;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -32,43 +33,43 @@ public class ImageViewer extends javax.swing.JFrame {
 
     /** Creates new form ImageViewer */
     public ImageViewer() {
-        initComponents();
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        jButton1.setText("Save");
-        Image imge = null;
-        File file = null;
-        jScrollPane1.setViewportView(jPanel2);
-
-
-        // values.map should be already initialized when user clicks the 'Show'
-        // button in the main window
-        HashMap<String, String> map = Values.map;
-
-
-        if (map.containsKey(Values.REQUIRED_GSOM_NODE)) {
-            String[] images = map.get(Values.REQUIRED_GSOM_NODE).split(",");
-            forImage.setLayout(new GridLayout((int) images.length / 7, 7, 4, 4));
-            for (String img : images) {
-                file = new File(Values.IMAGE_FOLDER_LOCATION + "\\" + img + ".jpg");
-                try {
-                    System.out.println("> file: " + file);
-                    imge = ImageIO.read(file).getScaledInstance(100, 100, BufferedImage.SCALE_SMOOTH);
-                } catch (IOException ex) {
-                    Logger.getLogger(ImageViewer.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                if (StartApp.getThubnailImage(imge, file) != null) {
-                    forImage.add(StartApp.getThubnailImage(imge, file));
-                }
-
-            }
-        }
-
-        
-        jPanel2.add(forImage);
-        setSize(876, 524);
-        setTitle("Feature Extraction Viewer");
-        setLocationRelativeTo(null);
+//        initComponents();
+//        setLocationRelativeTo(null);
+//        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+//        jButton1.setText("Save");
+//        Image imge = null;
+//        File file = null;
+//        jScrollPane1.setViewportView(jPanel2);
+//
+//
+//        // values.map should be already initialized when user clicks the 'Show'
+//        // button in the main window
+//        HashMap<String, String> map = UIValues.map;
+//
+//
+//        if (map.containsKey(UIValues.REQUIRED_GSOM_NODE)) {
+//            String[] images = map.get(UIValues.REQUIRED_GSOM_NODE).split(",");
+//            forImage.setLayout(new GridLayout((int) images.length / 7, 7, 4, 4));
+//            for (String img : images) {
+//                file = new File(UIValues.IMAGE_FOLDER_LOCATION + "\\" + img + ".jpg");
+//                try {
+//                    System.out.println("> file: " + file);
+//                    imge = ImageIO.read(file).getScaledInstance(100, 100, BufferedImage.SCALE_SMOOTH);
+//                } catch (IOException ex) {
+//                    Logger.getLogger(ImageViewer.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                if (UIHelper.getThubnailImage(imge, file) != null) {
+//                    forImage.add(UIHelper.getThubnailImage(imge, file));
+//                }
+//
+//            }
+//        }
+//
+//
+//        jPanel2.add(forImage);
+//        setSize(876, 524);
+//        setTitle("Feature Extraction Viewer");
+//        setLocationRelativeTo(null);
     }
 
     /** This method is called from within the constructor to
