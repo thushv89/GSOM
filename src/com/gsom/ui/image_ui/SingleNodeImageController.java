@@ -13,9 +13,21 @@ import java.util.ArrayList;
 public class SingleNodeImageController {
     
     private SingleNodeImageViewer view;
+    private SingleNodeImageModel model;
+    public SingleNodeImageController(){
+        view = new SingleNodeImageViewer();
+        model = new SingleNodeImageModel();
+    }
+    
+    private void populateModel(String hitNode,ArrayList<String> fileNames){
+        model.setHitNode(hitNode);
+        model.setImgList(fileNames);
+    }
     
     public void showView(String hitNode,ArrayList<String> imgList){
-        //TODO: Set the model
-        //TODO: Show the view
+        
+        populateModel(hitNode, imgList);
+        view.setModelToView(model);
+        view.setVisible(true);
     }
 }

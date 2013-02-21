@@ -9,6 +9,9 @@ import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,71 +26,63 @@ import javax.swing.*;
  *
  * @author Thush
  */
-public class ImageNetworkViewer extends javax.swing.JFrame {
+public class ImageNetworkViewer extends javax.swing.JFrame implements MouseListener {
 
     /**
      * Creates new form ImageNetworkViewer
      */
     public ImageNetworkViewer() {
         initComponents();
-
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         // Set the Main window's size
         setSize(600, 560);
         setLocationRelativeTo(null);
     }
+    private Map<String, ArrayList<String>> map;
 
     public void viewGrid(ImageNetworkModel model) {
         //System.out.println(">> " + UIValues.getINPUT_FILE_LOCATION());
 
-        Map<String, ArrayList<String>> map = model.getHitAndImageMap();
-        String recreatedKey = "";
-        File file = null;
-        Image image = null;
-        String firstFileName;
+        map = model.getHitAndImageMap();
 
+        gridHolderPanel = ImageGridHelper.getImageGridPanel(gridHolderPanel, map, this);
         // Set the scrollpane viewport
         gridScrollPane.setViewportView(gridHolderPanel);
-        // Set a grid layout in gridholderPanel
-        gridHolderPanel.setLayout(new GridLayout(UIValues.getXGridCount(), UIValues.getYGridCount()));
 
+    }
 
-        JLabel[][] cells = new JLabel[UIValues.getXGridCount()][UIValues.getYGridCount()];
-        System.out.println("UGX: " + UIValues.getXGridCount() + " " + UIValues.getYGridCount());
-        for (int ix = 0, xx = UIValues.getX_MIN(); ix < UIValues.getXGridCount(); ix++, xx++) {
-            for (int iy = 0, yy = UIValues.getYMIN(); iy < UIValues.getYGridCount(); iy++, yy++) {
-                //System.out.print("(" + ix + "," + iy + ") ");
-                recreatedKey = xx + "," + yy;
-                if (map.containsKey(recreatedKey)) {
-                    //fileNames = map.get(recreatedKey); -- thush
-                    firstFileName = map.get(recreatedKey).get(0);
-                    //firstFileName = fileNames.split(",")[0]; -- thush
-                    //System.out.println(fileNames);
-                    file = new File(UIValues.getIMAGE_FOLDER_LOCATION() + "\\" + firstFileName + ".jpg");
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        JLabel label = (JLabel) e.getSource();
 
-                    try {
-                        image = ImageIO.read(file).getScaledInstance(80, 80, BufferedImage.SCALE_SMOOTH);
-                        cells[ix][iy] = getThubnailImage(image);
-
-                    } catch (IOException ex) {
-                        Logger.getLogger(ImageNetworkViewer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    cells[ix][iy] = new JLabel("");
-                }
-                cells[ix][iy].setBorder(BorderFactory.createLineBorder(Color.black));
-                
-                gridHolderPanel.add(cells[ix][iy]);
-            }
+        if (!label.isEnabled()) {
+            label.setEnabled(true);
+        } else {
+            listener.clickedOnImage(label.getName(), map.get(label.getName()));
         }
-        System.out.println("> " + UIValues.getXGridCount() + " - " + UIValues.getYGridCount());
     }
 
-    private JLabel getThubnailImage(Image img) {
-        JLabel label = new JLabel();
-        label.setLayout(new GridLayout(2, 1));
-        label.setIcon(new ImageIcon(img));
-        return label;
+    @Override
+    public void mousePressed(MouseEvent e) {
+        return;
     }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        return;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        return;
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        return;
+    }
+    //  
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -257,14 +252,13 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
-        
     }//GEN-LAST:event_closeBtnActionPerformed
-
     ImageNetworkViewerListener listener;
-    public void setImageNetworkViewerListener(ImageNetworkViewerListener listener){
+
+    public void setImageNetworkViewerListener(ImageNetworkViewerListener listener) {
         this.listener = listener;
     }
-    
+
     private void imgDirBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imgDirBrowseBtnActionPerformed
         JFileChooser chooser = new JFileChooser("D:\\MyProjects\\FYP\\MPEG_7\\");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -274,14 +268,14 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
             return;
         }
 
-        
+
         //JOptionPane.showMessageDialog(null,chosenFile.getAbsolutePath());
         imgDirInputTextField.setText(chooser.getSelectedFile().getAbsolutePath());
         //UIValues.setIMAGE_FOLDER_LOCATION(chosenFile.getAbsolutePath()); -thush
         infoLbl.setVisible(false);
-        
-        
-        
+
+
+
 
     }//GEN-LAST:event_imgDirBrowseBtnActionPerformed
 
@@ -303,10 +297,10 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
     private void viewGridBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewGridBtnActionPerformed
         String imgFolder = imgDirInputTextField.getText();
         String outputFile = outputFileTxt.getText();
-        
-        listener.readyToCalc(outputFile,imgFolder);
-        
-        
+
+        listener.readyToCalc(outputFile, imgFolder);
+
+
     }//GEN-LAST:event_viewGridBtnActionPerformed
 
     public void populateAndView(ImageNetworkModel model) {

@@ -6,15 +6,12 @@ package com.gsom.ui;
 
 import com.gsom.core.GSOMRun;
 import com.gsom.enums.InputDataType;
-import com.gsom.images.ui.resources.ImageLocationAndNodeSelector;
-import com.gsom.images.ui.resources.UIHelper;
 import com.gsom.listeners.GSOMRunListener;
 import com.gsom.objects.GCluster;
 import com.gsom.objects.GNode;
 import com.gsom.ui.image_ui.ImageNetworkController;
-import com.gsom.ui.image_ui.ImageNetworkHelper;
-import com.gsom.ui.image_ui.ImageNetworkViewer;
-import com.gsom.ui.image_ui.UIValues;
+import com.gsom.ui.image_ui.SingleNodeImageController;
+import com.gsom.ui.image_ui.listeners.ImageNetworkControllerListener;
 import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.util.Utils;
 import com.sun.image.codec.jpeg.JPEGCodec;
@@ -31,10 +28,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
@@ -44,13 +39,12 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.util.ShapeUtilities;
-import sun.misc.Launcher;
 
 /**
  *
  * @author Thush
  */
-public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
+public class MainWindow extends javax.swing.JFrame implements GSOMRunListener,ImageNetworkControllerListener {
 
     public static int distance;
 
@@ -449,11 +443,18 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
         // TODO add your handling code here:
     }//GEN-LAST:event_fileTypeComboActionPerformed
     private ImageNetworkController imgNetController;
-
+    private SingleNodeImageController sNodeController;
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        imgNetController = new ImageNetworkController();
+        imgNetController = new ImageNetworkController(this);
         imgNetController.displayView();
     }//GEN-LAST:event_jButton1ActionPerformed
+    
+    @Override
+    public void clickedOnImage(String key,ArrayList<String> values) {
+        sNodeController = new SingleNodeImageController();
+        sNodeController.showView(key, values);
+    }
     
     private GSOMRun gRun;
 
@@ -675,4 +676,5 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
     public void stepCompleted(String str) {
         statusTextArea.append(str + "\n");
     }
+
 }

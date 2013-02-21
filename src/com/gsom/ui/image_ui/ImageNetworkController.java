@@ -4,6 +4,7 @@
  */
 package com.gsom.ui.image_ui;
 
+import com.gsom.ui.image_ui.listeners.ImageNetworkControllerListener;
 import com.gsom.ui.image_ui.listeners.ImageNetworkViewerListener;
 import java.io.File;
 import java.util.ArrayList;
@@ -19,10 +20,11 @@ public class ImageNetworkController implements ImageNetworkViewerListener{
     private ImageNetworkViewer view;
     private ImageNetworkModel model;
     private UIValues uiVal;
-    
+    private ImageNetworkControllerListener listener;
     private ImageNetworkHelper helper;
     
-    public ImageNetworkController(){
+    public ImageNetworkController(ImageNetworkControllerListener listener){
+        this.listener = listener;
         view = new ImageNetworkViewer();
         helper = new ImageNetworkHelper();
         uiVal = new UIValues();
@@ -59,5 +61,10 @@ public class ImageNetworkController implements ImageNetworkViewerListener{
     
         ImageNetworkHelper.setUIValues(fileName);
     
+    }
+
+    @Override
+    public void clickedOnImage(String key,ArrayList<String> values) {
+        listener.clickedOnImage(key,values);
     }
 }

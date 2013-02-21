@@ -10,7 +10,6 @@ import java.util.ArrayList;
  *
  * @author Thush
  */
-public interface ImageNetworkViewerListener {
-    public void readyToCalc(String outputPath,String dirPath);
+public interface ImageNetworkControllerListener {
     public void clickedOnImage(String key,ArrayList<String> values);
 }
