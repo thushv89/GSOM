@@ -32,7 +32,7 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
         initComponents();
 
         // Set the Main window's size
-        setSize(600, 520);
+        setSize(600, 560);
         setLocationRelativeTo(null);
     }
 
@@ -115,22 +115,13 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Dynamic Grid Viewer");
+        setResizable(false);
         getContentPane().setLayout(null);
 
         mainPanel.setBackground(new java.awt.Color(204, 204, 255));
         mainPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout gridHolderPanelLayout = new javax.swing.GroupLayout(gridHolderPanel);
-        gridHolderPanel.setLayout(gridHolderPanelLayout);
-        gridHolderPanelLayout.setHorizontalGroup(
-            gridHolderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 552, Short.MAX_VALUE)
-        );
-        gridHolderPanelLayout.setVerticalGroup(
-            gridHolderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 334, Short.MAX_VALUE)
-        );
-
+        gridHolderPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         gridScrollPane.setViewportView(gridHolderPanel);
 
         javax.swing.GroupLayout dynamicGridLayout = new javax.swing.GroupLayout(dynamicGrid);
@@ -139,7 +130,7 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
             dynamicGridLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dynamicGridLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(gridScrollPane)
+                .addComponent(gridScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
                 .addContainerGap())
         );
         dynamicGridLayout.setVerticalGroup(
@@ -150,7 +141,7 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        mainPanel.add(dynamicGrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 98, -1, 350));
+        mainPanel.add(dynamicGrid, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 98, 570, 350));
 
         imgDirBrowseBtn.setText("Browse");
         imgDirBrowseBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -260,7 +251,7 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
         mainPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, 570, 50));
 
         getContentPane().add(mainPanel);
-        mainPanel.setBounds(0, 10, 590, 490);
+        mainPanel.setBounds(0, 10, 590, 510);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
