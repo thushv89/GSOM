@@ -4,6 +4,8 @@
  */
 package com.gsom.util.input.parsing;
 
+import com.gsom.util.input.parsing.InputParser;
+import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.listeners.InputParsedListener;
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,14 +16,12 @@ import java.io.IOException;
  *
  * @author Thush
  */
-public class TextureProportionDataParser extends InputParser{
+public class NumericalDataParser extends InputParser{
     
     public void parseInput(InputParsedListener iListener,String fileName){
 
 		String tokenizer=",";
-		int numOfDimensions = 5;
-                GSOMConstants.DIMENSIONS = numOfDimensions;
-
+                
 		try {
 			//use buffering, reading one line at a time
 			//FileReader always assumes default encoding is OK!
@@ -37,17 +37,18 @@ public class TextureProportionDataParser extends InputParser{
                                                 
                                                 
 						strForWeights.add(tokens[0]);
-						double[] weightArr = new double[numOfDimensions];
+						double[] weightArr = new double[tokens.length-1];
 						for(int j=1;j<tokens.length;j++){
-							weightArr[j-1]=Double.parseDouble(tokens[j]);
+							weightArr[j-1]=Integer.parseInt(tokens[j]);  
 						}
 						weights.add(weightArr);
 					}					
 				}
 			}
 			finally {
+                            GSOMConstants.DIMENSIONS = weights.get(0).length;
 				input.close();
-				super.normalizeData(weights, numOfDimensions);
+				super.normalizeData(weights, GSOMConstants.DIMENSIONS);
 				iListener.inputParseComplete(); //trigger inputParseComplete event
 			}
 		}

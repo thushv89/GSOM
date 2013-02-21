@@ -63,7 +63,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
         for (InputDataType i : InputDataType.values()) {
             fileTypeCombo.addItem(i.toString());
         }
-        fileTypeCombo.setSelectedItem("GENERIC");
+        fileTypeCombo.setSelectedItem(0);
     }
 
     private ArrayList<Color> getColorArray(int count) {
@@ -385,7 +385,21 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener {
             distance = 1;
         }
         gRun = new GSOMRun(this);
-        gRun.runTraining(InputFileLocationTextBox.getText(), (String) fileTypeCombo.getSelectedItem());
+        
+        InputDataType type = InputDataType.NUMERICAL;
+        
+        String typeStr = (String) fileTypeCombo.getSelectedItem();
+        if(typeStr.equalsIgnoreCase("NUMERICAL")){
+            type =InputDataType.NUMERICAL;
+        }
+        else if(typeStr.equalsIgnoreCase("FLAGS")){
+            type = InputDataType.FLAGS;
+        }
+        else if(typeStr.equalsIgnoreCase("ASHES")){
+            type = InputDataType.ASHES;
+        }
+        
+        gRun.runTraining(InputFileLocationTextBox.getText(),type);
 //        for(InputDataType i : InputDataType.values()){
 //        fileTypeCombo.addItem(i.toString());
 //        }

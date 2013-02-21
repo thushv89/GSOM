@@ -74,6 +74,8 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
                 } else {
                     cells[ix][iy] = new JLabel("");
                 }
+                cells[ix][iy].setBorder(BorderFactory.createLineBorder(Color.black));
+                
                 gridHolderPanel.add(cells[ix][iy]);
             }
         }
@@ -84,7 +86,6 @@ public class ImageNetworkViewer extends javax.swing.JFrame {
         JLabel label = new JLabel();
         label.setLayout(new GridLayout(2, 1));
         label.setIcon(new ImageIcon(img));
-        label.setBorder(BorderFactory.createLineBorder(Color.black));
         return label;
     }
     /**

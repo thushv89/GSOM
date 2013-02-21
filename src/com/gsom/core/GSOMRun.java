@@ -45,7 +45,7 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
         this.listener = listener;
     }
 
-    public void runTraining(String fileName, String type) {
+    public void runTraining(String fileName, InputDataType type) {
         startTime = System.currentTimeMillis();
         parserFactory = new InputParserFactory();
         trainer = new GSOMTrainer();
@@ -55,26 +55,12 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
         clusterer = new KMeanClusterer();
 
         //String fileName = "texture_proportion.txt";
-        if (type.equalsIgnoreCase("FLAGS")) {
+        if (type==InputDataType.FLAGS) {
             parser = parserFactory.getInputParser(InputDataType.FLAGS);
-        } else if (type.equalsIgnoreCase("ZOO")) {
-            parser = parserFactory.getInputParser(InputDataType.ZOO);
-        } else if (type.equalsIgnoreCase("MACHINES")) {
-            parser = parserFactory.getInputParser(InputDataType.MACHINES);
-        } else if (type.equalsIgnoreCase("LETTERS")) {
-            parser = parserFactory.getInputParser(InputDataType.LETTERS);
-        } else if (type.equalsIgnoreCase("ASHES")) {
+        } else if (type==InputDataType.ASHES) {
             parser = parserFactory.getInputParser(InputDataType.ASHES);
-        } else if (type.equalsIgnoreCase("HISTOGRAM")) {
-            parser = parserFactory.getInputParser(InputDataType.HISTOGRAM);
-        } else if (type.equalsIgnoreCase("CHRIME")) {
-            parser = parserFactory.getInputParser(InputDataType.CHRIME);
-        } else if (type.equalsIgnoreCase("EH_POSITION")) {
-            parser = parserFactory.getInputParser(InputDataType.EH_POSITION);
-        } else if (type.equalsIgnoreCase("TEXTURE_PROPORTION")) {
-            parser = parserFactory.getInputParser(InputDataType.TEXTURE_PROPORTION);
-        } else if (type.equalsIgnoreCase("GENERIC")) {
-            parser = parserFactory.getInputParser(InputDataType.GENERIC);
+        } else if (type==InputDataType.NUMERICAL) {
+            parser = parserFactory.getInputParser(InputDataType.NUMERICAL);
         }
         parser.parseInput(this, fileName);
     }
