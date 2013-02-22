@@ -5,21 +5,10 @@
 package com.gsom.ui.image_ui;
 
 import com.gsom.ui.image_ui.listeners.ImageNetworkViewerListener;
-import java.awt.Color;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -41,6 +30,7 @@ public class ImageNetworkViewer extends javax.swing.JFrame implements MouseListe
     private Map<String, ArrayList<String>> map;
 
     public void viewGrid(ImageNetworkModel model) {
+        gridHolderPanel.removeAll();
         //System.out.println(">> " + UIValues.getINPUT_FILE_LOCATION());
 
         map = model.getHitAndImageMap();
@@ -252,6 +242,7 @@ public class ImageNetworkViewer extends javax.swing.JFrame implements MouseListe
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
+        setVisible(false);
     }//GEN-LAST:event_closeBtnActionPerformed
     ImageNetworkViewerListener listener;
 
@@ -260,7 +251,7 @@ public class ImageNetworkViewer extends javax.swing.JFrame implements MouseListe
     }
 
     private void imgDirBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imgDirBrowseBtnActionPerformed
-        JFileChooser chooser = new JFileChooser("D:\\MyProjects\\FYP\\MPEG_7\\");
+        JFileChooser chooser = new JFileChooser(".");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int choice = chooser.showOpenDialog(null);
 
@@ -280,7 +271,7 @@ public class ImageNetworkViewer extends javax.swing.JFrame implements MouseListe
     }//GEN-LAST:event_imgDirBrowseBtnActionPerformed
 
     private void outFileBrowserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outFileBrowserActionPerformed
-        JFileChooser chooser = new JFileChooser("D:\\MyProjects\\FYP\\MPEG_7\\");
+        JFileChooser chooser = new JFileChooser(".");
         int choice = chooser.showOpenDialog(null);
 
         if (choice != JFileChooser.APPROVE_OPTION) {
@@ -297,10 +288,11 @@ public class ImageNetworkViewer extends javax.swing.JFrame implements MouseListe
     private void viewGridBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewGridBtnActionPerformed
         String imgFolder = imgDirInputTextField.getText();
         String outputFile = outputFileTxt.getText();
-
-        listener.readyToCalc(outputFile, imgFolder);
-
-
+        if (!imgFolder.isEmpty() && !outputFile.isEmpty()) {
+            listener.readyToCalc(outputFile, imgFolder);
+        } else {
+            JOptionPane.showMessageDialog(null,"Please browse Image directory and Output directory");
+        }
     }//GEN-LAST:event_viewGridBtnActionPerformed
 
     public void populateAndView(ImageNetworkModel model) {

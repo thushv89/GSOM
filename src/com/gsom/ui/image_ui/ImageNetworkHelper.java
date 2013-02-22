@@ -4,22 +4,18 @@
  */
 package com.gsom.ui.image_ui;
 
-import java.awt.GridLayout;
-import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -46,15 +42,15 @@ public class ImageNetworkHelper {
                 list.add(string);
             }
             result.put((String) pairs.getKey(), list);
-            System.out.println(pairs.getKey() + " => " + pairs.getValue());
+           // System.out.println(pairs.getKey() + " => " + pairs.getValue());
             it.remove(); // avoids a ConcurrentModificationException
         }
         return result;
     }
 
     public static void setUIValues(String fileName) {
-        ArrayList<String> x = new ArrayList<String>();
-        ArrayList<String> y = new ArrayList<String>();
+        ArrayList<Integer> x = new ArrayList<Integer>();
+        ArrayList<Integer> y = new ArrayList<Integer>();
         BufferedReader br = null;
         File file = null;
         try {
@@ -75,8 +71,8 @@ public class ImageNetworkHelper {
                 // Checks wether node is not empty
                 if (!vals[0].trim().isEmpty()) {
                     String[] xyStr = vals[0].trim().split(",");
-                    x.add(xyStr[0].trim());
-                    y.add(xyStr[1].trim());
+                    x.add(Integer.parseInt(xyStr[0].trim()));
+                    y.add(Integer.parseInt(xyStr[1].trim()));
                 }
                 map.put(vals[0].trim(), vals[1].trim());
 
@@ -86,14 +82,13 @@ public class ImageNetworkHelper {
             Collections.sort(x);
             Collections.sort(y);
 
-            int xMin = Integer.parseInt(x.get(0).trim());
-            int xMax = Integer.parseInt(x.get(x.size() - 1).trim());
-            int yMin = Integer.parseInt(y.get(0).trim());
-            int yMax = Integer.parseInt(y.get(y.size() - 1).trim());
+            int xMin = x.get(0);
+            int xMax =x.get(x.size() - 1);
+            int yMin = y.get(0);
+            int yMax = y.get(y.size() - 1);
             UIValues.addMinMaxValues(file.getName(), xMin, xMax, yMin, yMax);
 
-            UIValues.setXGridCount(Math.abs(xMax - xMin) + 1);
-            System.out.println("Math.abs(xMax-xMin): " + Math.abs(xMax - xMin));
+            UIValues.setXGridCount(Math.abs(xMax - xMin) + 1);        
             UIValues.setYGridCount(Math.abs(yMax - yMin) + 1);
 
             br.close();

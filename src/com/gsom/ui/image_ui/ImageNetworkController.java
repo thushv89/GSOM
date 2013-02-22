@@ -6,10 +6,8 @@ package com.gsom.ui.image_ui;
 
 import com.gsom.ui.image_ui.listeners.ImageNetworkControllerListener;
 import com.gsom.ui.image_ui.listeners.ImageNetworkViewerListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -57,8 +55,7 @@ public class ImageNetworkController implements ImageNetworkViewerListener{
     }
     
     //read the given file and set UIValues values
-    private void createTheMap(String fileName){
-    
+    private void createTheMap(String fileName){    
         ImageNetworkHelper.setUIValues(fileName);
     
     }

@@ -20,10 +20,10 @@ public class SingleNodeImageViewer extends javax.swing.JFrame {
     }
 
     public void setModelToView(SingleNodeImageModel model) {
-        int jLblWidth = 100;
-        int cols = (int) Math.ceil( gridHolderPanel.getSize().width/jLblWidth);
+        int jLblWidth = 120;
+        int cols = 5;//(int) gridHolderPanel.getSize().width/jLblWidth;
         gridHolderPanel = ImageGridHelper.getImageGridPanel(gridHolderPanel, model.getImgList(),cols);
-        gridViewScrollPane.setViewportView(gridHolderPanel);
+        jScrollPane1.setViewportView(gridHolderPanel);
     }
     
     /**
@@ -36,16 +36,33 @@ public class SingleNodeImageViewer extends javax.swing.JFrame {
     private void initComponents() {
 
         closeBtn = new javax.swing.JButton();
-        gridViewScrollPane = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
         gridHolderPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Single Node Image Viewer");
 
         closeBtn.setText("Close");
+        closeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeBtnActionPerformed(evt);
+            }
+        });
 
-        gridHolderPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        gridViewScrollPane.setViewportView(gridHolderPanel);
+        jScrollPane1.setName("gridScrollPane"); // NOI18N
+
+        javax.swing.GroupLayout gridHolderPanelLayout = new javax.swing.GroupLayout(gridHolderPanel);
+        gridHolderPanel.setLayout(gridHolderPanelLayout);
+        gridHolderPanelLayout.setHorizontalGroup(
+            gridHolderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 525, Short.MAX_VALUE)
+        );
+        gridHolderPanelLayout.setVerticalGroup(
+            gridHolderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 359, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(gridHolderPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -54,11 +71,9 @@ public class SingleNodeImageViewer extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(gridViewScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 468, Short.MAX_VALUE)
                         .addComponent(closeBtn)))
                 .addContainerGap())
         );
@@ -66,14 +81,18 @@ public class SingleNodeImageViewer extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(gridViewScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(closeBtn)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_closeBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -119,6 +138,6 @@ public class SingleNodeImageViewer extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeBtn;
     private javax.swing.JPanel gridHolderPanel;
-    private javax.swing.JScrollPane gridViewScrollPane;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

@@ -30,15 +30,15 @@ import javax.swing.JPanel;
  */
 public class ImageGridHelper {
 
-    public static JPanel getImageGridPanel(JPanel gridHolderPanel, Map<String, ArrayList<String>> map,MouseListener mListner) {
+    public static JPanel getImageGridPanel(JPanel gridHolderPanel, Map<String, ArrayList<String>> map, MouseListener mListner) {
 
         String recreatedKey = "";
         File file = null;
         Image image = null;
         String firstFileName;
+
         // Set a grid layout in gridholderPanel
         gridHolderPanel.setLayout(new GridLayout(UIValues.getXGridCount(), UIValues.getYGridCount()));
-
 
         JLabel[][] cells = new JLabel[UIValues.getXGridCount()][UIValues.getYGridCount()];
 
@@ -55,7 +55,8 @@ public class ImageGridHelper {
                     try {
                         image = ImageIO.read(file).getScaledInstance(80, 80, BufferedImage.SCALE_SMOOTH);
                         cells[ix][iy] = getThubnailImage(image);
-                        cells[ix][iy].setName(xx+","+yy);
+                        cells[ix][iy].setName(xx + "," + yy);
+                        cells[ix][iy].setToolTipText("("+xx + "," + yy+")");
                         cells[ix][iy].addMouseListener(mListner);
 
                     } catch (IOException ex) {
@@ -76,31 +77,33 @@ public class ImageGridHelper {
     }
 
     public static JPanel getImageGridPanel(JPanel gridHolderPanel, ArrayList<String> fNames, int cols) {
-        int minRowThresh = 10;
-        //int rows =(int) Math.ceil(fNames.size()/cols);
-        
-        
+        int rows = (int)(fNames.size() / cols)+1;
+        if (rows == 0) {
+            rows = 1;
+        }
         File file = null;
         Image image = null;
+
         // Set a grid layout in gridholderPanel
-        gridHolderPanel.setLayout(new GridLayout(1, 10));
+        gridHolderPanel.setLayout(new GridLayout(rows, cols, 4, 4));
         JLabel[] cells = new JLabel[fNames.size()];
 
         for (int i = 0; i < fNames.size(); i++) {
-
             file = new File(UIValues.getIMAGE_FOLDER_LOCATION() + "\\" + fNames.get(i) + ".jpg");
-
+            //System.out.println("File: "+file);
             try {
                 image = ImageIO.read(file).getScaledInstance(80, 80, BufferedImage.SCALE_SMOOTH);
                 cells[i] = getThubnailImage(image);
-
             } catch (IOException ex) {
                 Logger.getLogger(ImageNetworkViewer.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
             gridHolderPanel.add(cells[i]);
         }
-       
+
+        for (int i = fNames.size(); i < fNames.size()+Math.abs((rows * cols) - fNames.size()); i++) {
+            gridHolderPanel.add(new JLabel(" "));
+        }
+          
         //cells[ix][iy].setBorder(BorderFactory.createLineBorder(Color.black));
         return gridHolderPanel;
     }
