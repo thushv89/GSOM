@@ -39,18 +39,20 @@ public class NumericalDataParser extends InputParser{
 						strForWeights.add(tokens[0]);
 						double[] weightArr = new double[tokens.length-1];
 						for(int j=1;j<tokens.length;j++){
-							weightArr[j-1]=Integer.parseInt(tokens[j]);  
+							weightArr[j-1]=Double.parseDouble(tokens[j]);  
 						}
 						weights.add(weightArr);
 					}					
 				}
-			}
-			finally {
+			}catch(IOException ex){
+                            System.out.println("Errorrrr      ");
+                        }
+
                             GSOMConstants.DIMENSIONS = weights.get(0).length;
 				input.close();
 				super.normalizeData(weights, GSOMConstants.DIMENSIONS);
 				iListener.inputParseComplete(); //trigger inputParseComplete event
-			}
+
 		}
 		catch (IOException ex){
 			ex.printStackTrace();

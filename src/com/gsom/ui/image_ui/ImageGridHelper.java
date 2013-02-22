@@ -76,11 +76,14 @@ public class ImageGridHelper {
     }
 
     public static JPanel getImageGridPanel(JPanel gridHolderPanel, ArrayList<String> fNames, int cols) {
-        int rows =(int) Math.ceil(fNames.size()/cols);
+        int minRowThresh = 10;
+        //int rows =(int) Math.ceil(fNames.size()/cols);
+        
+        
         File file = null;
         Image image = null;
         // Set a grid layout in gridholderPanel
-        gridHolderPanel.setLayout(new GridLayout(rows, cols));
+        gridHolderPanel.setLayout(new GridLayout(1, 10));
         JLabel[] cells = new JLabel[fNames.size()];
 
         for (int i = 0; i < fNames.size(); i++) {

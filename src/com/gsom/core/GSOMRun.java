@@ -107,6 +107,9 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
 
     public void runTesting(Map<String, GNode> map, ArrayList<double[]> iWeights, ArrayList<String> iStrings) {
         testResults = tester.testGSOM(map, iWeights, iStrings);
+        for(Map.Entry<String,String> entry : testResults.entrySet()){
+            System.out.println(entry.getKey()+":"+entry.getValue());
+        }
     }
 
     public Map<String, GNode> getGSOMMap() {
