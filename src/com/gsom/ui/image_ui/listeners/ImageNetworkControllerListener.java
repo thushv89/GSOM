@@ -12,4 +12,5 @@ import java.util.ArrayList;
  */
 public interface ImageNetworkControllerListener {
     public void clickedOnImage(String key,ArrayList<String> values);
+    public void gridImageLocSet(String path);
 }

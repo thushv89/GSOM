@@ -4,6 +4,7 @@
  */
 package com.gsom.ui.image_ui.listeners;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -13,4 +14,6 @@ import java.util.ArrayList;
 public interface ImageNetworkViewerListener {
     public void readyToCalc(String outputPath,String dirPath);
     public void clickedOnImage(String key,ArrayList<String> values);
+    public void saveImageClicked(String path, BufferedImage img);
+    public void saveLocBrowseClicked(String path);
 }

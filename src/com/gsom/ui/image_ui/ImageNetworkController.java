@@ -6,6 +6,7 @@ package com.gsom.ui.image_ui;
 
 import com.gsom.ui.image_ui.listeners.ImageNetworkControllerListener;
 import com.gsom.ui.image_ui.listeners.ImageNetworkViewerListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class ImageNetworkController implements ImageNetworkViewerListener{
     private UIValues uiVal;
     private ImageNetworkControllerListener listener;
     private ImageNetworkHelper helper;
+
     
     public ImageNetworkController(ImageNetworkControllerListener listener){
         this.listener = listener;
@@ -63,5 +65,16 @@ public class ImageNetworkController implements ImageNetworkViewerListener{
     @Override
     public void clickedOnImage(String key,ArrayList<String> values) {
         listener.clickedOnImage(key,values);
+    }
+
+    @Override
+    public void saveImageClicked(String path,BufferedImage img) {
+        ImageGridHelper.saveImage(path, img);
+        listener.gridImageLocSet(path);
+    }
+
+    @Override
+    public void saveLocBrowseClicked(String path) {
+        listener.gridImageLocSet(path);
     }
 }

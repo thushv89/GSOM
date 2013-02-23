@@ -12,6 +12,7 @@ import com.gsom.objects.GNode;
 import com.gsom.ui.image_ui.ImageNetworkController;
 import com.gsom.ui.image_ui.SingleNodeImageController;
 import com.gsom.ui.image_ui.listeners.ImageNetworkControllerListener;
+import com.gsom.util.GFileHandler;
 import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.util.Utils;
 import com.sun.image.codec.jpeg.JPEGCodec;
@@ -27,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.FileHandler;
 import javax.swing.JFileChooser;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -394,10 +396,8 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener,Im
         }
         
         gRun.runTraining(InputFileLocationTextBox.getText(),type);
-//        for(InputDataType i : InputDataType.values()){
-//        fileTypeCombo.addItem(i.toString());
-//        }
-
+        
+        
     }//GEN-LAST:event_trainButtonActionPerformed
 
     private void plotMapBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotMapBtnActionPerformed
@@ -453,11 +453,65 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener,Im
     @Override
     public void clickedOnImage(String key,ArrayList<String> values) {
         sNodeController = new SingleNodeImageController();
+        sNodeController.setDirPath(getFolderPath(gridImageLoc));
         sNodeController.showView(key, values);
     }
     
+    private String gridImageLoc;
+    @Override
+    public void gridImageLocSet(String path){
+        gridImageLoc=path;
+    }
+    
+    private String getFolderPath(String path){
+        if(path == null || path.length()<=0){
+            return "";
+        }
+        
+        String[] tokens = path.split("\\\\");
+        String dirLoc="";
+        for(int i=0;tokens.length>0 && i<tokens.length-1;i++){
+            dirLoc += tokens[i]+"\\\\";
+        }
+        return dirLoc;
+    }
+    
+    
     private GSOMRun gRun;
 
+    @Override
+    public void executionCompleted() {
+        ArrayList<String> nodeDataList = new ArrayList<String>();       
+        Map<String,String> testResultMap = gRun.getTestResultMap();
+        for(Map.Entry<String,String> entry : testResultMap.entrySet()){
+            nodeDataList.add(entry.getKey()+":"+entry.getValue());
+        }
+        
+        ArrayList<String> clusterDataList = new ArrayList<String>();
+        
+        ArrayList<GCluster> clusterList = gRun.getClusters();
+        int i=1;
+        
+        for(GCluster cluster : clusterList){
+            String clusterDataStr = "0,"+i+":";
+            for(int j=0;j<cluster.getcNodes().size();j++){
+                GNode node = cluster.getcNodes().get(j);
+                //last item, no comma needed
+                if(j==cluster.getcNodes().size()-1){
+                    clusterDataStr += testResultMap.get(Utils.generateIndexString(node.getX(), node.getY()));
+                }else{
+                    clusterDataStr += testResultMap.get(Utils.generateIndexString(node.getX(), node.getY()))+",";
+                }
+                
+            }
+            clusterDataList.add(clusterDataStr);
+            i++;
+        }
+        
+        GFileHandler.writeFile("NodeData.txt",nodeDataList);
+        GFileHandler.writeFile("ClusterData.txt", clusterDataList);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -676,5 +730,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener,Im
     public void stepCompleted(String str) {
         statusTextArea.append(str + "\n");
     }
+
+    
 
 }

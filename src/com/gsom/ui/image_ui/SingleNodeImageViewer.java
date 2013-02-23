@@ -4,6 +4,8 @@
  */
 package com.gsom.ui.image_ui;
 
+import com.gsom.ui.image_ui.listeners.SingleNodeImageViewerListener;
+
 /**
  *
  * @author Thush
@@ -38,6 +40,7 @@ public class SingleNodeImageViewer extends javax.swing.JFrame {
         closeBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         gridHolderPanel = new javax.swing.JPanel();
+        saveImgBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Single Node Image Viewer");
@@ -64,6 +67,13 @@ public class SingleNodeImageViewer extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(gridHolderPanel);
 
+        saveImgBtn.setText("Save Image");
+        saveImgBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveImgBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -73,7 +83,9 @@ public class SingleNodeImageViewer extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 468, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(saveImgBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(closeBtn)))
                 .addContainerGap())
         );
@@ -83,16 +95,28 @@ public class SingleNodeImageViewer extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(closeBtn)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(closeBtn)
+                    .addComponent(saveImgBtn))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private SingleNodeImageViewerListener listener;
+    
+    public void setSingleNodeViewerListener(SingleNodeImageViewerListener listerner){
+        this.listener = listerner;
+    }
+    
     private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_closeBtnActionPerformed
+
+    private void saveImgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveImgBtnActionPerformed
+        listener.saveImageClicked(ImageGridHelper.getGridHolderPanelImage(gridHolderPanel));
+    }//GEN-LAST:event_saveImgBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -139,5 +163,6 @@ public class SingleNodeImageViewer extends javax.swing.JFrame {
     private javax.swing.JButton closeBtn;
     private javax.swing.JPanel gridHolderPanel;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton saveImgBtn;
     // End of variables declaration//GEN-END:variables
 }

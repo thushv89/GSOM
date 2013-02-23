@@ -72,21 +72,6 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
         listener.stepCompleted("Node position Adjustment Complete");
         this.map = map;
 
-        //---------Used for testing
-                /*
-        for(GNode node: map.values()){
-        if(node.getHitValue()>=1){
-        System.out.println("Node "+node.getX()+","+node.getY()+" hit value is "+node.getHitValue());
-        }
-        }
-        for(int i=0;i<GSOMConstants.DIMENSIONS;i++){
-        ArrayList<GNode> maplist = new ArrayList<GNode>(map.values());
-        System.out.println(maplist.get(0).getWeights()[i]+", "
-        +maplist.get(10).getWeights()[i]+", "
-        +maplist.get(20).getWeights()[i]+", "
-        +maplist.get(30).getWeights()[i]+", "
-        +maplist.get(40).getWeights()[i]);
-        }*/
         smoothner.smoothGSOM(map, parser.getWeights(), this);
 
     }
@@ -136,7 +121,7 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
         }
         listener.stepCompleted("Goodness of the Map : " + totalErrorValue / map.size());
         runTesting(map, parser.getWeights(), parser.getStrForWeights());
-        //clusterer.runClustering(map, this);
+        clusterer.runClustering(map, this);
     }
 
     @Override
@@ -146,19 +131,8 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
         listener.stepCompleted("Clustering completed!");
         listener.stepCompleted("------------------------------------------------");
         this.clusters = clusters;
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("output.txt"));
-            for (Map.Entry<String, String> entry : testResults.entrySet()) {
-                System.out.println(entry.getKey() + " - " + entry.getValue());
-                bw.write(entry.getKey() + " - " + entry.getValue());
-                bw.newLine();
-            }
-            bw.close();
-
-        } catch (IOException e) {
-            System.out.println("Error in file");
-            e.printStackTrace();
-        }
+        
+        listener.executionCompleted();
 
     }
 
@@ -170,22 +144,6 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
 
         // To hold key and values
         String[] vals = new String[2];
-
-//        while ((line = br.readLine()) != null) {
-//            // to skip the 'best count' value
-//            if(count!=0){
-//                // splitting keys and values
-//                vals = line.split("-");
-//                map.put(vals[0].trim(), vals[1].trim());
-//
-//            } else{
-//                Values.bestCount = line;
-//            }
-//            count++;
-//        }
-//
-//        Values.map = map;
-//        System.out.println("> "+Values.map.size()+ " lines were scanned");
 
         br.close();
     }

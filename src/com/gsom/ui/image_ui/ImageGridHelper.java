@@ -56,7 +56,7 @@ public class ImageGridHelper {
                         image = ImageIO.read(file).getScaledInstance(80, 80, BufferedImage.SCALE_SMOOTH);
                         cells[ix][iy] = getThubnailImage(image);
                         cells[ix][iy].setName(xx + "," + yy);
-                        cells[ix][iy].setToolTipText("("+xx + "," + yy+")");
+                        cells[ix][iy].setToolTipText("(" + xx + "," + yy + ")");
                         cells[ix][iy].addMouseListener(mListner);
 
                     } catch (IOException ex) {
@@ -77,7 +77,7 @@ public class ImageGridHelper {
     }
 
     public static JPanel getImageGridPanel(JPanel gridHolderPanel, ArrayList<String> fNames, int cols) {
-        int rows = (int)(fNames.size() / cols)+1;
+        int rows = (int) (fNames.size() / cols) + 1;
         if (rows == 0) {
             rows = 1;
         }
@@ -100,10 +100,10 @@ public class ImageGridHelper {
             gridHolderPanel.add(cells[i]);
         }
 
-        for (int i = fNames.size(); i < fNames.size()+Math.abs((rows * cols) - fNames.size()); i++) {
+        for (int i = fNames.size(); i < fNames.size() + Math.abs((rows * cols) - fNames.size()); i++) {
             gridHolderPanel.add(new JLabel(" "));
         }
-          
+
         //cells[ix][iy].setBorder(BorderFactory.createLineBorder(Color.black));
         return gridHolderPanel;
     }
@@ -113,5 +113,27 @@ public class ImageGridHelper {
         label.setLayout(new GridLayout(2, 1));
         label.setIcon(new ImageIcon(img));
         return label;
+    }
+
+    public static void saveImage(String file, BufferedImage img) {
+        try {
+            ImageIO.write(
+                      img,
+                      "jpg",
+                      new File(file+".jpg"));
+        } catch (IOException ex) {
+            Logger.getLogger(ImageGridHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static BufferedImage getGridHolderPanelImage(JPanel gridPanle) {
+        BufferedImage image = new BufferedImage(
+                gridPanle.getWidth(),
+                gridPanle.getHeight(),
+                BufferedImage.TYPE_INT_RGB);
+        // call the Component's paint method, using
+        // the Graphics object of the image.
+        gridPanle.paint(image.getGraphics());
+        return image;
     }
 }

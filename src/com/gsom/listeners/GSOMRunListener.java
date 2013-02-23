@@ -9,5 +9,6 @@ package com.gsom.listeners;
  * @author Thush
  */
 public interface GSOMRunListener {
+    public void executionCompleted();
     public void stepCompleted(String str);
 }

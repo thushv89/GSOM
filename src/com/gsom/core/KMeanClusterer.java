@@ -122,7 +122,7 @@ public class KMeanClusterer {
         double R = Double.MAX_VALUE;
         int bestClusterCount = 2;
         int kMax = (int) Math.ceil(Math.sqrt(map.size()));
-        for(int i=2;i<=kMax && i<kClusters.size();i++){
+        for(int i=2;i<=kMax && i<kClusters.size()+2;i++){
             double temp = getR(kClusters.get(i-2));
             if(temp <= R){
                 R= temp;

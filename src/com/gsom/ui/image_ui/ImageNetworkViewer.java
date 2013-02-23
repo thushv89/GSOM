@@ -97,13 +97,17 @@ public class ImageNetworkViewer extends javax.swing.JFrame implements MouseListe
         closeBtn = new javax.swing.JButton();
         infoLbl = new javax.swing.JLabel();
         viewGridBtn = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        imageSaveLocTxt = new javax.swing.JTextField();
+        browseBtn = new javax.swing.JButton();
+        saveBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Dynamic Grid Viewer");
-        setResizable(false);
         getContentPane().setLayout(null);
 
         mainPanel.setBackground(new java.awt.Color(204, 204, 255));
+        mainPanel.setPreferredSize(new java.awt.Dimension(580, 600));
         mainPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         gridHolderPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -164,7 +168,7 @@ public class ImageNetworkViewer extends javax.swing.JFrame implements MouseListe
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(outputFileTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
-                    .addComponent(imgDirInputTextField))
+                    .addComponent(imgDirInputTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(imgDirBrowseBtn)
@@ -226,17 +230,62 @@ public class ImageNetworkViewer extends javax.swing.JFrame implements MouseListe
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(infoLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(closeBtn)
-                    .addComponent(viewGridBtn))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(closeBtn)
+                            .addComponent(viewGridBtn))
+                        .addGap(0, 1, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(infoLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         mainPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, 570, 50));
 
+        browseBtn.setText("Browse");
+        browseBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseBtnActionPerformed(evt);
+            }
+        });
+
+        saveBtn.setText("Save Image");
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(imageSaveLocTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(browseBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveBtn)
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(imageSaveLocTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(browseBtn)
+                    .addComponent(saveBtn))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        mainPanel.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 510, 570, 40));
+
         getContentPane().add(mainPanel);
-        mainPanel.setBounds(0, 10, 590, 510);
+        mainPanel.setBounds(0, 0, 590, 580);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -295,6 +344,28 @@ public class ImageNetworkViewer extends javax.swing.JFrame implements MouseListe
         }
     }//GEN-LAST:event_viewGridBtnActionPerformed
 
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        if(imageSaveLocTxt.getText()!= null && imageSaveLocTxt.getText().length()>0){
+            listener.saveImageClicked(imageSaveLocTxt.getText(),ImageGridHelper.getGridHolderPanelImage(gridHolderPanel));
+        }else{
+            JOptionPane.showMessageDialog(null, "Please choose a fileName");
+        }
+    }//GEN-LAST:event_saveBtnActionPerformed
+
+    
+    
+    private void browseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBtnActionPerformed
+        JFileChooser chooser = new JFileChooser(".");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int choice = chooser.showOpenDialog(null);
+
+        if (choice != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        //JOptionPane.showMessageDialog(null,chosenFile.getAbsolutePath());
+        imageSaveLocTxt.setText(chooser.getSelectedFile().getAbsolutePath());
+    }//GEN-LAST:event_browseBtnActionPerformed
+
     public void populateAndView(ImageNetworkModel model) {
         viewGrid(model);
     }
@@ -340,20 +411,24 @@ public class ImageNetworkViewer extends javax.swing.JFrame implements MouseListe
 //        });
 //    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton browseBtn;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton closeBtn;
     private javax.swing.JPanel dynamicGrid;
     private javax.swing.JPanel gridHolderPanel;
     private javax.swing.JScrollPane gridScrollPane;
+    private javax.swing.JTextField imageSaveLocTxt;
     private javax.swing.JButton imgDirBrowseBtn;
     private javax.swing.JTextField imgDirInputTextField;
     private javax.swing.JLabel infoLbl;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JButton outFileBrowser;
     private javax.swing.JTextField outputFileTxt;
+    private javax.swing.JButton saveBtn;
     private javax.swing.JButton viewGridBtn;
     // End of variables declaration//GEN-END:variables
 }
