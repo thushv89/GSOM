@@ -20,9 +20,7 @@ public class InputParserFactory {
         else if(type == InputDataType.FLAGS){
             return new FlagDataParser();
         }
-        else if(type == InputDataType.ASHES){
-            return new AshesDataParser();
-        }
+        
         return null;
     }
 }

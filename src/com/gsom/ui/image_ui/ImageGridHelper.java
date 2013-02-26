@@ -94,6 +94,7 @@ public class ImageGridHelper {
             try {
                 image = ImageIO.read(file).getScaledInstance(80, 80, BufferedImage.SCALE_SMOOTH);
                 cells[i] = getThubnailImage(image);
+                image.flush();
             } catch (IOException ex) {
                 Logger.getLogger(ImageNetworkViewer.class.getName()).log(Level.SEVERE, null, ex);
             }

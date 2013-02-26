@@ -44,9 +44,19 @@ public class Utils {
                 }
             }
             return winner;
-        } else {
+        } else if (MainWindow.distance == 1) {
             for (Map.Entry<String, GNode> entry : nodeMap.entrySet()) {
-                currDist = Utils.calcChamDistance(input, entry.getValue().getWeights());
+                currDist = Utils.calcChiDistance(input, entry.getValue().getWeights(),GSOMConstants.DIMENSIONS);
+
+                if (currDist < minDist) {
+                    winner = entry.getValue();
+                    minDist = currDist;
+                }
+            }
+            return winner;
+        } else if (MainWindow.distance == 2) {
+            for (Map.Entry<String, GNode> entry : nodeMap.entrySet()) {
+                currDist = Utils.calcIntersectionDist(input, entry.getValue().getWeights(),GSOMConstants.DIMENSIONS);
 
                 if (currDist < minDist) {
                     winner = entry.getValue();
@@ -55,6 +65,7 @@ public class Utils {
             }
             return winner;
         }
+        return null;
 
     }
 
@@ -81,24 +92,40 @@ public class Utils {
         return Math.sqrt(dist);
     }
 
-    public static double calcChamDistance(double[] vec1, double[] vec2) {
-
-        double threshold = 0.005;
-        double minVal;
-        double totalMinval = 0.0;
-        for (double val1 : vec1) {
-            minVal = Double.MAX_VALUE;
-
-            for (double val2 : vec2) {
-                if (Math.abs(val1 - val2) < minVal) {
-                    minVal = Math.abs(val1 - val2);
-                    if(minVal<threshold){
-                        break;
-                    }
-                }
-            }
-            totalMinval += minVal;
+    public static double calcChiDistance(double[] vec1, double[] vec2,int dimensions) {
+        
+        double total=0;
+        normalizeVector(vec1);
+        normalizeVector(vec2);
+        
+        for(int i=0;i<dimensions;i++){
+            total += Math.pow(vec1[i]-vec2[i], 2)/(vec1[i]+vec2[i]);
         }
-        return totalMinval / vec1.length;
+        return 0.5*total;
+    }
+
+    public static double calcIntersectionDist(double[] vec1, double[] vec2, int dimensions) {
+        double total = 0;
+        
+        normalizeVector(vec1);
+        normalizeVector(vec2);
+        
+        for (int i = 0; i < dimensions; i++) {
+            total += Math.min(vec1[i], vec2[i]);
+        }
+        return 1-total;
+    }
+    
+    private static void normalizeVector(double[] vec){
+        double max1=0;
+        
+        for(int i=0;i<vec.length;i++){
+            max1 = Math.max(max1, vec[i]);
+        }
+        
+        for(int i=0;i<vec.length;i++){
+            vec[i]=vec[i]/max1;           
+        }
+    
     }
 }

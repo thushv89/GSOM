@@ -4,6 +4,7 @@
  */
 package com.gsom.util.input.parsing;
 
+import com.gsom.enums.NormalizeType;
 import com.gsom.listeners.InputParsedListener;
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -60,7 +61,7 @@ public class FlagDataParser extends InputParser{
 			}
 			finally {
 				input.close();
-				normalizeData(weights, numOfDimensions);
+				normalizeData(NormalizeType.COLUMN_MAX_1_MIN_0, weights, numOfDimensions);
 				iListener.inputParseComplete(); //trigger inputParseComplete event
 			}
 		}
