@@ -4,7 +4,7 @@
  */
 package com.gsom.util.input.parsing;
 
-import com.gsom.enums.NormalizeType;
+
 import com.gsom.util.input.parsing.InputParser;
 import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.listeners.InputParsedListener;
@@ -51,7 +51,7 @@ public class NumericalDataParser extends InputParser{
 
                             GSOMConstants.DIMENSIONS = weights.get(0).length;
 				input.close();
-				super.normalizeData(NormalizeType.COLUMN_MAX_1_MIN_0, weights, GSOMConstants.DIMENSIONS);
+				super.normalizeData(weights, GSOMConstants.DIMENSIONS);
 				iListener.inputParseComplete(); //trigger inputParseComplete event
 
 		}

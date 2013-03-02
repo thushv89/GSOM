@@ -5,6 +5,7 @@
 package com.gsom.ui;
 
 import com.gsom.core.GSOMRun;
+import com.gsom.enums.InitType;
 import com.gsom.enums.InputDataType;
 import com.gsom.listeners.GSOMRunListener;
 import com.gsom.objects.GCluster;
@@ -27,9 +28,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.logging.FileHandler;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -150,26 +154,32 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
         plotMapBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         statusTextArea = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        InputFileLocationTextBox = new javax.swing.JTextField();
+        browseButton = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        InputFileLocationTextBox = new javax.swing.JTextField();
-        fileTypeCombo = new javax.swing.JComboBox();
-        browseButton = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        initTypeCombo = new javax.swing.JComboBox();
+        jLabel9 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jTextField5 = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jDistance = new javax.swing.JComboBox();
-        normTypeCombo = new javax.swing.JComboBox();
-        jLabel9 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        fileTypeCombo = new javax.swing.JComboBox();
+        jPanel3 = new javax.swing.JPanel();
+        saveData = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        cCountTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("GSOM Train & Test Tool");
@@ -192,6 +202,38 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
         statusTextArea.setColumns(20);
         statusTextArea.setRows(5);
         jScrollPane1.setViewportView(statusTextArea);
+
+        browseButton.setText("Browse");
+        browseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Input File Location");
+
+        jButton1.setText("View Images");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Basic Parameters"));
+
+        jLabel1.setText("SF");
+
+        jLabel2.setText("NR");
+
+        jLabel3.setText("FD");
+
+        jLabel4.setText("LR");
+
+        jLabel5.setText("ITR");
+
+        initTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Random", "Linear" }));
+
+        jLabel9.setText("Initialization");
 
         jTextField1.setText("0.3");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -228,15 +270,70 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
             }
         });
 
-        jLabel1.setText("SF");
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(initTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(initTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        jLabel2.setText("NR");
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Advance Parameters"));
 
-        jLabel3.setText("FD");
+        jLabel8.setText("Distance");
 
-        jLabel4.setText("LR");
+        jDistance.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Euclidean", "Chi-Square", "Intersection" }));
 
-        jLabel5.setText("ITR");
+        jLabel7.setText("Parser");
 
         fileTypeCombo.setModel(new javax.swing.DefaultComboBoxModel());
         fileTypeCombo.addActionListener(new java.awt.event.ActionListener() {
@@ -245,31 +342,71 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
             }
         });
 
-        browseButton.setText("Browse");
-        browseButton.addActionListener(new java.awt.event.ActionListener() {
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fileTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fileTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Save Options"));
+
+        saveData.setText("Save Node & Cluster Data");
+        saveData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                browseButtonActionPerformed(evt);
+                saveDataActionPerformed(evt);
             }
         });
 
-        jLabel6.setText("Input File Location");
+        jLabel10.setText("Number of Clusters :");
 
-        jLabel7.setText("File Type");
-
-        jButton1.setText("View Images");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setText("Distance");
-
-        jDistance.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Euclidean", "Chi-Square", "Intersection" }));
-
-        normTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Vector Sum = 1", "Max(Column) = 1" }));
-
-        jLabel9.setText("Normalization");
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cCountTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(saveData)
+                .addGap(18, 18, 18))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveData)
+                    .addComponent(jLabel10)
+                    .addComponent(cCountTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -278,63 +415,33 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addComponent(jLabel1)
-                                .addGap(56, 56, 56)
-                                .addComponent(jLabel2)
-                                .addGap(53, 53, 53)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel5)
-                                .addGap(23, 23, 23))))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel8)))
-                                    .addComponent(normTypeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(75, 75, 75))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(InputFileLocationTextBox)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(browseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(fileTypeCombo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGap(26, 26, 26)
-                                        .addComponent(trainButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(plotMapBtn)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButton1)))
-                                .addGap(0, 18, Short.MAX_VALUE)))))
+                                .addComponent(jLabel6)
+                                .addGap(0, 353, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addComponent(trainButton)
+                                .addGap(39, 39, 39)
+                                .addComponent(plotMapBtn)
+                                .addGap(36, 36, 36)
+                                .addComponent(jButton1)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
@@ -346,44 +453,63 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(InputFileLocationTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(browseButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fileTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(normTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(trainButton)
+                    .addComponent(jButton1)
                     .addComponent(plotMapBtn)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                    .addComponent(trainButton))
+                .addGap(32, 32, 32)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void populateClusterDataList(Map<String,String> testResultMap,ArrayList<GCluster> clusterList,ArrayList<String> clusterDataList) {
+        int i = 1;
+
+        for (GCluster cluster : clusterList) {
+            
+            ArrayList<GNode> cNodeList = cluster.getcNodes();
+            Collections.sort(cNodeList,new Comparator<GNode>(){
+                @Override
+                public int compare(GNode o1, GNode o2) {
+                    return o1.getHitValue()-o2.getHitValue();
+                }
+            });
+            String clusterDataStr = cNodeList.get(cNodeList.size()-1).getX()+","
+                    + cNodeList.get(cNodeList.size()-1).getY()+ ":";
+            
+            for (int j = 0; j < cNodeList.size(); j++) {
+                GNode node = cNodeList.get(j);
+                if (testResultMap.containsKey(Utils.generateIndexString(node.getX(), node.getY()))) {
+                    //last item, no comma needed
+                    if (j == cluster.getcNodes().size() - 1) {
+                        clusterDataStr += testResultMap.get(Utils.generateIndexString(node.getX(), node.getY()));
+                    } else {
+                        clusterDataStr += testResultMap.get(Utils.generateIndexString(node.getX(), node.getY())) + ",";
+                    }
+                }
+
+            }
+            clusterDataList.add(clusterDataStr);
+            i++;
+        }
+    }
+
+    private void populateNodeDataList(Map<String,String> testResultMap, ArrayList<String> nodeDataList) {
+        for (Map.Entry<String, String> entry : testResultMap.entrySet()) {
+            nodeDataList.add(entry.getKey() + ":" + entry.getValue());
+        }
+        
+    }
 
     private void trainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainButtonActionPerformed
 
@@ -399,7 +525,14 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
         }else{
             distance = 2;
         }
-        gRun = new GSOMRun(this);
+        
+        InitType initType=null;
+        if(initTypeCombo.getSelectedIndex()==0){
+        initType = InitType.RANDOM;
+        }else if(initTypeCombo.getSelectedIndex()==1){
+            initType = InitType.LINEAR;
+        }
+        gRun = new GSOMRun(initType,this);
 
         InputDataType type = InputDataType.NUMERICAL;
 
@@ -418,7 +551,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
     }//GEN-LAST:event_trainButtonActionPerformed
 
     private void plotMapBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotMapBtnActionPerformed
-        createTheXYPlot(gRun.getGSOMMap(), gRun.getTestResultMap(), gRun.getClusters());
+        //createTheXYPlot(gRun.getGSOMMap(), gRun.getTestResultMap(), gRun.getClusters());
     }//GEN-LAST:event_plotMapBtnActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -467,6 +600,25 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
         imgNetController.displayView();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void saveDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveDataActionPerformed
+        Map<String, String> testResultMap = gRun.getTestResultMap();
+        
+        nodeDataList = new ArrayList<String>();
+        populateNodeDataList(testResultMap,nodeDataList);
+        
+        clusterDataList = new ArrayList<String>();
+        ArrayList<ArrayList<GCluster>> clusterList = gRun.getAllClusters();
+        int cCount = Integer.parseInt(cCountTxt.getText());
+        int cListIdx = cCount-2;
+        if(cListIdx > clusterList.size()-1){
+            JOptionPane.showMessageDialog(null, "Enter a number less than "+(clusterList.size()+2));
+        }else{
+            populateClusterDataList(testResultMap,clusterList.get(cListIdx),clusterDataList);
+            GFileHandler.writeFile("ClusterData.txt", clusterDataList);
+            GFileHandler.writeFile("NodeData.txt", nodeDataList);
+        }
+    }//GEN-LAST:event_saveDataActionPerformed
+
     @Override
     public void clickedOnImage(String key, ArrayList<String> values) {
         sNodeController = new SingleNodeImageController();
@@ -494,39 +646,13 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
     }
     private GSOMRun gRun;
 
+    private ArrayList<String> nodeDataList;
+    private ArrayList<String> clusterDataList;
+    
     @Override
     public void executionCompleted() {
-        ArrayList<String> nodeDataList = new ArrayList<String>();
-        Map<String, String> testResultMap = gRun.getTestResultMap();
-        for (Map.Entry<String, String> entry : testResultMap.entrySet()) {
-            nodeDataList.add(entry.getKey() + ":" + entry.getValue());
-        }
-
-        ArrayList<String> clusterDataList = new ArrayList<String>();
-
-        ArrayList<GCluster> clusterList = gRun.getClusters();
-        int i = 1;
-
-        for (GCluster cluster : clusterList) {
-            String clusterDataStr = "0," + i + ":";
-            for (int j = 0; j < cluster.getcNodes().size(); j++) {
-                GNode node = cluster.getcNodes().get(j);
-                if (testResultMap.containsKey(Utils.generateIndexString(node.getX(), node.getY()))) {
-                    //last item, no comma needed
-                    if (j == cluster.getcNodes().size() - 1) {
-                        clusterDataStr += testResultMap.get(Utils.generateIndexString(node.getX(), node.getY()));
-                    } else {
-                        clusterDataStr += testResultMap.get(Utils.generateIndexString(node.getX(), node.getY())) + ",";
-                    }
-                }
-
-            }
-            clusterDataList.add(clusterDataStr);
-            i++;
-        }
-
-        GFileHandler.writeFile("NodeData.txt", nodeDataList);
-        GFileHandler.writeFile("ClusterData.txt", clusterDataList);
+        
+        cCountTxt.setText((gRun.getBestCount()+ 2)+"");
     }
 
     /**
@@ -572,8 +698,6 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
         });
     }
 
-    public static void updateTextArea(String str) {
-    }
 
     private void createTheXYPlot(Map<String, GNode> map, final Map<String, String> testResults, ArrayList<GCluster> clusters) {
         ArrayList<Color> plotColors = getColorArray(12);
@@ -721,10 +845,13 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField InputFileLocationTextBox;
     private javax.swing.JButton browseButton;
+    private javax.swing.JTextField cCountTxt;
     private javax.swing.JComboBox fileTypeCombo;
+    private javax.swing.JComboBox initTypeCombo;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jDistance;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -733,14 +860,17 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JComboBox normTypeCombo;
     private javax.swing.JButton plotMapBtn;
+    private javax.swing.JButton saveData;
     private javax.swing.JTextArea statusTextArea;
     private javax.swing.JButton trainButton;
     // End of variables declaration//GEN-END:variables

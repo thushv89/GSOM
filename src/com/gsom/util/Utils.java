@@ -8,6 +8,15 @@ import com.gsom.ui.MainWindow;
 
 public class Utils {
 
+    
+    public static double[] generateLinearArray(int dimensions,double startVal){
+        double[] arr = new double[dimensions];
+        for (int i = 0; i < dimensions; i++) {
+            arr[i]=startVal;
+        }
+        return arr;
+    }
+    
     public static double[] generateRandomArray(int dimensions) {
         double[] arr = new double[dimensions];
         for (int i = 0; i < dimensions; i++) {

@@ -5,6 +5,7 @@
 package com.gsom.ui.image_ui;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseListener;
@@ -55,6 +56,7 @@ public class ImageGridHelper {
                     try {
                         image = ImageIO.read(file).getScaledInstance(80, 80, BufferedImage.SCALE_SMOOTH);
                         cells[ix][iy] = getThubnailImage(image);
+                        cells[ix][iy].setHorizontalAlignment(JLabel.CENTER);
                         cells[ix][iy].setName(xx + "," + yy);
                         cells[ix][iy].setToolTipText("(" + xx + "," + yy + ")");
                         cells[ix][iy].addMouseListener(mListner);

@@ -12,5 +12,5 @@ import java.util.ArrayList;
  * @author Thush
  */
 public interface ClusteringListener {
-    public void clusteringCompleted(ArrayList<GCluster> clusters);
+    public void clusteringCompleted(ArrayList<ArrayList<GCluster>> clusters,int bestClusterCount);
 }

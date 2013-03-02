@@ -1,6 +1,6 @@
 package com.gsom.util.input.parsing;
 
-import com.gsom.enums.NormalizeType;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,12 +24,9 @@ public abstract class InputParser {
 
     abstract public void parseInput(InputParsedListener iListener, String fileName);
 
-    protected void normalizeData(NormalizeType nType, ArrayList<double[]> inputs, int dimensions) {
-        if (nType == NormalizeType.COLUMN_MAX_1_MIN_0) {
+    protected void normalizeData(ArrayList<double[]> inputs, int dimensions) {     
             normalizeVertical(dimensions, inputs);
-        } else if (nType == NormalizeType.VECTOR_TOTAL_ADD_UP_TO_1) {
-            normalizeHorizontal(dimensions, inputs);
-        }
+       
     }
 
     private void normalizeHorizontal(int dimensions, ArrayList<double[]> inputs) {
@@ -60,8 +57,12 @@ public abstract class InputParser {
         for (int i = 0; i < dimensions; i++) {
             for (int j = 0; j < inputs.size(); j++) {
                 double[] inArr = inputs.get(j);
+                
+                //do this if there's some value other than 0 is in column
+                if(maxDimArr.get(i) - minDimArr.get(i) > 0){
                 inArr[i] = (inArr[i] - minDimArr.get(i)) / (maxDimArr.get(i) - minDimArr.get(i));
                 inputs.set(j, inArr);
+                }
             }
         }
     }

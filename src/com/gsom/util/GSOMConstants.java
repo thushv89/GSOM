@@ -20,7 +20,7 @@ public class GSOMConstants {
 	public static int MAX_ITERATIONS;
         
         public static double getGT(){
-            GT = - DIMENSIONS * Math.log(SPREAD_FACTOR);
+            GT = - DIMENSIONS * DIMENSIONS * Math.log(SPREAD_FACTOR);
             return GT;
         }
 }

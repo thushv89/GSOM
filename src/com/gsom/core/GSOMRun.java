@@ -1,5 +1,6 @@
 package com.gsom.core;
 
+import com.gsom.enums.InitType;
 import com.gsom.enums.InputDataType;
 import com.gsom.listeners.ClusteringListener;
 import com.gsom.listeners.GSOMRunListener;
@@ -26,29 +27,36 @@ import java.util.concurrent.TimeUnit;
 
 public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePositionAdjustListener, GSOMSmoothnerListener, ClusteringListener {
 
-    InputParserFactory parserFactory;
-    InputParser parser;
-    GSOMTrainer trainer;
-    GCoordAdjuster adjuster;
-    GSOMSmoothner smoothner;
-    GSOMTester tester;
-    KMeanClusterer clusterer;
-    Map<String, GNode> map;
-    Map<String, String> testResults;
-    ArrayList<GCluster> clusters;
-    GSOMRunListener listener;
-    long startTime;
-    long endTimeBeforeClustering;
-    long endTimeAfterClustering;
-
-    public GSOMRun(GSOMRunListener listener) {
+    private InputParserFactory parserFactory;
+    private InputParser parser;
+    private GSOMTrainer trainer;
+    private GCoordAdjuster adjuster;
+    private GSOMSmoothner smoothner;
+    private GSOMTester tester;
+    private KMeanClusterer clusterer;
+    
+    private Map<String, GNode> map;
+    private Map<String, String> testResults;
+    private ArrayList<ArrayList<GCluster>> allClusters;
+    private int bestCCount;
+    
+    private GSOMRunListener listener;
+    
+    private long startTime;
+    private long endTimeBeforeClustering;
+    private long endTimeAfterClustering;
+    
+    private InitType initType;
+    
+    public GSOMRun(InitType initType,GSOMRunListener listener) {
         this.listener = listener;
+        this.initType = initType;
     }
 
     public void runTraining(String fileName, InputDataType type) {
         startTime = System.currentTimeMillis();
         parserFactory = new InputParserFactory();
-        trainer = new GSOMTrainer();
+        trainer = new GSOMTrainer(initType);
         adjuster = new GCoordAdjuster();
         smoothner = new GSOMSmoothner();
         tester = new GSOMTester();
@@ -105,10 +113,14 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
         return this.testResults;
     }
 
-    public ArrayList<GCluster> getClusters() {
-        return this.clusters;
+    public ArrayList<ArrayList<GCluster>> getAllClusters() {
+        return this.allClusters;
     }
 
+    public int getBestCount(){
+        return this.bestCCount;
+    }
+    
     @Override
     public void smootheningCompleted(Map<String, GNode> map) {
         double totalErrorValue = 0;
@@ -125,13 +137,13 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
     }
 
     @Override
-    public void clusteringCompleted(ArrayList<GCluster> clusters) {
+    public void clusteringCompleted(ArrayList<ArrayList<GCluster>> clusters,int bestCount) {
         endTimeAfterClustering = System.currentTimeMillis();
         listener.stepCompleted("End Time : " + timeFormatter(endTimeAfterClustering - startTime));
         listener.stepCompleted("Clustering completed!");
         listener.stepCompleted("------------------------------------------------");
-        this.clusters = clusters;
-        
+        this.allClusters = clusters;
+        this.bestCCount = bestCount;
         listener.executionCompleted();
 
     }

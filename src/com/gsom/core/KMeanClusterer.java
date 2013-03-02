@@ -27,10 +27,8 @@ public class KMeanClusterer {
         int bestCount = getBestClusterCount(kClusterList);
         
         System.out.println("Best count: "+(bestCount+2)+" K cluster list size "+kClusterList.size());
-        ArrayList<GCluster> bestClusters = kClusterList.get(bestCount);
-        //clusters = bestClusters;
         
-        listener.clusteringCompleted(bestClusters);
+        listener.clusteringCompleted(kClusterList,bestCount);
     }
 
     //get All posible cluster lists
