@@ -30,7 +30,7 @@ public class Utils {
     }
 
     public static double getLearningRate(int iter, int nodeCount) {
-        return GSOMConstants.START_LEARNING_RATE * Math.exp(-(double) iter / GSOMConstants.MAX_ITERATIONS) * (1 - (3.8 / nodeCount));
+        return GSOMConstants.START_LEARNING_RATE * Math.exp(-(double) iter / GSOMConstants.MAX_ITERATIONS) * (1 - (double)(3.8 / nodeCount));
     }
 
     public static double getTimeConst() {
@@ -78,14 +78,16 @@ public class Utils {
 
     }
 
-    public static void adjustNeighbourWeight(GNode node, GNode winner, double[] input, double radius, double learningRate) {
-        double nodeDistSqr = Math.pow(Utils.calcEucDist(winner.getWeights(), node.getWeights(), GSOMConstants.DIMENSIONS), 2);
-        double radiusSqr = Math.pow(radius, 2);
+    //---TESTED INline with the C# code---
+    public static GNode adjustNeighbourWeight(GNode node, GNode winner, double[] input, double radius, double learningRate) {
+        double nodeDistSqr = Math.pow(winner.getX() - node.getX(), 2) + Math.pow(winner.getY() - node.getY(), 2);
+        double radiusSqr = radius*radius;
         //if node is within the radius
         if (nodeDistSqr < radiusSqr) {
-            double influence = Math.exp(-nodeDistSqr / (2 * radiusSqr));
+            double influence = Math.exp(-(double)nodeDistSqr / (2 * radiusSqr));
             node.adjustWeights(input, influence, learningRate);
         }
+        return node;
     }
 
     public static double getRadius(int iter, double timeConst) {
@@ -133,7 +135,7 @@ public class Utils {
         }
         
         for(int i=0;i<vec.length;i++){
-            vec[i]=vec[i]/max1;           
+            vec[i]=(double)vec[i]/max1;           
         }
     
     }

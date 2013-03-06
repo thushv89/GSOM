@@ -4,7 +4,6 @@ import java.util.Map;
 
 import javax.rmi.CORBA.Util;
 
-import com.gsom.listeners.NodeGrowthListener;
 import com.gsom.objects.GNode;
 import com.gsom.util.ArrayHelper;
 import com.gsom.util.input.parsing.GSOMConstants;
@@ -16,7 +15,7 @@ public class NodeGrowthHandler {
     //Also, it'll assign optimal weights for the new neurons
 	Map<String,GNode> map;
 	
-	public void growNodes(Map<String,GNode> map, GNode winner, NodeGrowthListener listener){
+	public void growNodes(Map<String,GNode> map, GNode winner){
 		this.map = map;
 		
 		int X = winner.getX();
@@ -40,8 +39,6 @@ public class NodeGrowthHandler {
 				map.put(Utils.generateIndexString(X, i), newNode);
 			}
 		}
-		
-		listener.nodeGrowthComplete(map);
 		return;
 	}
 	
@@ -55,24 +52,30 @@ public class NodeGrowthHandler {
 			
 			//winnerX,otherX
 			if(X == winner.getX()+1){
-				String nextNodeStr = Utils.generateIndexString(X+1, Y);
-				String othrSideNodeStr = Utils.generateIndexString(X-2, Y);
-				String topNodeStr = Utils.generateIndexString(winner.getX(), Y+1);
-				String botNodeStr = Utils.generateIndexString(winner.getX(), Y-1);
+				String nextNodeStr = Utils.generateIndexString(X+1, Y); //nX
+				String othrSideNodeStr = Utils.generateIndexString(X-2, Y); //oX
+				String topNodeStr = Utils.generateIndexString(winner.getX(), Y+1);  //tX
+				String botNodeStr = Utils.generateIndexString(winner.getX(), Y-1);  //bX
 				
 				//new node has one direct neighbor, 
 				//but neighbor has a neighbor in the opposing directly
-				if(map.containsKey(othrSideNodeStr)){
-					newWeights = newWeightsForNewNodeInMiddle(winner, othrSideNodeStr);
+                                //wX,X,nX
+				if(map.containsKey(nextNodeStr)){
+					newWeights = newWeightsForNewNodeInMiddle(winner, nextNodeStr);
 				}
-				else if(map.containsKey(nextNodeStr)){
+                                //oX,wX,X
+				else if(map.containsKey(othrSideNodeStr)){
 					//2 consecutive nodes on right
-					newWeights = newWeightsForNewNodeOnOneSide(winner, nextNodeStr);
+					newWeights = newWeightsForNewNodeOnOneSide(winner, othrSideNodeStr);
 				}
+                                //   tX
+                                //wX, X
 				else if(map.containsKey(topNodeStr)){
 					//right and top nodes
 					newWeights = newWeightsForNewNodeOnOneSide(winner, topNodeStr);
 				}
+                                //wX, X
+                                //   bX
 				else if(map.containsKey(botNodeStr)){
 					//right and bottom nodes
 					newWeights = newWeightsForNewNodeOnOneSide(winner, botNodeStr);
@@ -90,12 +93,14 @@ public class NodeGrowthHandler {
 				
 				//new node has one direct neighbor, 
 				//but neighbor has a neighbor in the opposing directly
-				if(map.containsKey(othrSideNodeStr)){
-					newWeights = newWeightsForNewNodeInMiddle(winner, othrSideNodeStr);
+                                //nX,X,wX
+				if(map.containsKey(nextNodeStr)){
+					newWeights = newWeightsForNewNodeInMiddle(winner, nextNodeStr);
 				}
-				else if(map.containsKey(nextNodeStr)){
+                                //X,wX,oX
+				else if(map.containsKey(othrSideNodeStr)){
 					//2 consecutive nodes on left
-					newWeights = newWeightsForNewNodeOnOneSide(winner, nextNodeStr);
+					newWeights = newWeightsForNewNodeOnOneSide(winner, othrSideNodeStr);
 				}
 				else if(map.containsKey(topNodeStr)){
 					//left and top nodes
@@ -124,12 +129,15 @@ public class NodeGrowthHandler {
 				
 				//new node has one direct neighbor, 
 				//but neighbor has a neighbor in the opposing directly
-				if(map.containsKey(othrSideNodeStr)){
-					newWeights = newWeightsForNewNodeInMiddle(winner, othrSideNodeStr);
+                                //nY
+                                // Y
+                                //wY
+				if(map.containsKey(nextNodeStr)){
+					newWeights = newWeightsForNewNodeInMiddle(winner, nextNodeStr);
 				}
-				else if(map.containsKey(nextNodeStr)){
+				else if(map.containsKey(othrSideNodeStr)){
 					//2 consecutive nodes upwards
-					newWeights = newWeightsForNewNodeOnOneSide(winner, nextNodeStr);
+					newWeights = newWeightsForNewNodeOnOneSide(winner, othrSideNodeStr);
 				}
 				else if(map.containsKey(leftNodeStr)){
 					//left and top nodes
@@ -153,12 +161,16 @@ public class NodeGrowthHandler {
 				
 				//new node has one direct neighbor, 
 				//but neighbor has a neighbor in the opposing directly
-				if(map.containsKey(othrSideNodeStr)){
-					newWeights = newWeightsForNewNodeInMiddle(winner, othrSideNodeStr);
+                                
+                                //wY
+                                // Y
+                                //nY
+				if(map.containsKey(nextNodeStr)){
+					newWeights = newWeightsForNewNodeInMiddle(winner, nextNodeStr);
 				}
-				else if(map.containsKey(nextNodeStr)){
+				else if(map.containsKey(othrSideNodeStr)){
 					//2 consecutive nodes on left
-					newWeights = newWeightsForNewNodeOnOneSide(winner, nextNodeStr);
+					newWeights = newWeightsForNewNodeOnOneSide(winner, othrSideNodeStr);
 				}
 				else if(map.containsKey(leftNodeStr)){
 					//left and top nodes
@@ -196,6 +208,7 @@ public class NodeGrowthHandler {
 		double[] newWeights;
 		GNode otherNode = map.get(otherNodeIdx);
 		newWeights = ArrayHelper.multiplyArrayByConst(winner.getWeights(), 2);
+                //System.out.println(newWeights.length+" "+winner.getWeights().length+" "+otherNode.getWeights().length);
 		newWeights = ArrayHelper.substract(newWeights, otherNode.getWeights(), GSOMConstants.DIMENSIONS);
 		return newWeights;
 	}

@@ -8,6 +8,7 @@ import com.gsom.core.GSOMRun;
 import com.gsom.enums.InitType;
 import com.gsom.enums.InputDataType;
 import com.gsom.listeners.GSOMRunListener;
+import com.gsom.nodes.EucDistOccMat;
 import com.gsom.objects.GCluster;
 import com.gsom.objects.GNode;
 import com.gsom.ui.image_ui.ImageNetworkController;
@@ -32,8 +33,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.logging.FileHandler;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -180,6 +180,12 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
         saveData = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         cCountTxt = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        maxCountLbl = new javax.swing.JLabel();
+        coeffTxt = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        calcCoeffBtn = new javax.swing.JButton();
+        viewMatrixBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("GSOM Train & Test Tool");
@@ -384,6 +390,12 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
 
         jLabel10.setText("Number of Clusters :");
 
+        cCountTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        jLabel12.setText("/");
+
+        maxCountLbl.setText("N");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -392,7 +404,11 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
                 .addContainerGap()
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cCountTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cCountTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(maxCountLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(saveData)
                 .addGap(18, 18, 18))
@@ -404,9 +420,27 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveData)
                     .addComponent(jLabel10)
-                    .addComponent(cCountTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cCountTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addComponent(maxCountLbl))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jLabel11.setText("Avg Varience :");
+
+        calcCoeffBtn.setText("Calc Coeff");
+        calcCoeffBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calcCoeffBtnActionPerformed(evt);
+            }
+        });
+
+        viewMatrixBtn.setText("View Co-oc Matrix");
+        viewMatrixBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewMatrixBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -428,21 +462,32 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(56, 56, 56)
+                                .addGap(10, 10, 10)
                                 .addComponent(trainButton)
-                                .addGap(39, 39, 39)
+                                .addGap(18, 18, 18)
+                                .addComponent(viewMatrixBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(plotMapBtn)
-                                .addGap(36, 36, 36)
-                                .addComponent(jButton1)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1))
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(21, 21, 21))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(coeffTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(calcCoeffBtn)
+                .addGap(47, 47, 47))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -461,11 +506,17 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(plotMapBtn)
-                    .addComponent(trainButton))
+                    .addComponent(trainButton)
+                    .addComponent(viewMatrixBtn))
                 .addGap(32, 32, 32)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(coeffTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(calcCoeffBtn))
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -478,14 +529,14 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
         for (GCluster cluster : clusterList) {
             
             ArrayList<GNode> cNodeList = cluster.getcNodes();
-            Collections.sort(cNodeList,new Comparator<GNode>(){
+            /*Collections.sort(cNodeList,new Comparator<GNode>(){
                 @Override
                 public int compare(GNode o1, GNode o2) {
                     return o1.getHitValue()-o2.getHitValue();
                 }
-            });
-            String clusterDataStr = cNodeList.get(cNodeList.size()-1).getX()+","
-                    + cNodeList.get(cNodeList.size()-1).getY()+ ":";
+            });*/
+            String clusterDataStr = cluster.getX()+","
+                    + cluster.getY()+ ":";
             
             for (int j = 0; j < cNodeList.size(); j++) {
                 GNode node = cNodeList.get(j);
@@ -515,9 +566,9 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
 
         GSOMConstants.SPREAD_FACTOR = Double.parseDouble(jTextField1.getText());
         GSOMConstants.MAX_NEIGHBORHOOD_RADIUS = Double.parseDouble(jTextField2.getText());
-        GSOMConstants.FD = Double.parseDouble(jTextField3.getText());
         GSOMConstants.START_LEARNING_RATE = Double.parseDouble(jTextField4.getText());
         GSOMConstants.MAX_ITERATIONS = Integer.parseInt(jTextField5.getText());
+        
         if (jDistance.getSelectedIndex() == 0) {
             distance = 0;
         } else if(jDistance.getSelectedIndex()==1){
@@ -551,7 +602,8 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
     }//GEN-LAST:event_trainButtonActionPerformed
 
     private void plotMapBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotMapBtnActionPerformed
-        //createTheXYPlot(gRun.getGSOMMap(), gRun.getTestResultMap(), gRun.getClusters());
+        int cCount = Integer.parseInt(cCountTxt.getText())-2;
+        createTheXYPlot(gRun.getGSOMMap(), gRun.getTestResultMap(), gRun.getAllClusters().get(cCount));
     }//GEN-LAST:event_plotMapBtnActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -619,6 +671,23 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
         }
     }//GEN-LAST:event_saveDataActionPerformed
 
+    private void calcCoeffBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcCoeffBtnActionPerformed
+        int cCount = Integer.parseInt(cCountTxt.getText());
+        coeffTxt.setText(gRun.getSilCoeff(cCount)+"");
+    }//GEN-LAST:event_calcCoeffBtnActionPerformed
+
+    private void viewMatrixBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMatrixBtnActionPerformed
+        JFrame matrixf = new JFrame();
+        matrixf.setSize(800,500);
+        EucDistOccMat matCal = new EucDistOccMat();
+        JTable table = matCal.generateMatrix(gRun.getGSOMMap(),GSOMConstants.DIMENSIONS);
+        JScrollPane scroll = new JScrollPane(table);
+        scroll.setSize(750,480);
+        matrixf.getContentPane().add(scroll);
+        
+        matrixf.setVisible(true);
+    }//GEN-LAST:event_viewMatrixBtnActionPerformed
+
     @Override
     public void clickedOnImage(String key, ArrayList<String> values) {
         sNodeController = new SingleNodeImageController();
@@ -653,6 +722,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
     public void executionCompleted() {
         
         cCountTxt.setText((gRun.getBestCount()+ 2)+"");
+        maxCountLbl.setText(gRun.getAllClusters().size()+1+"");
     }
 
     /**
@@ -735,7 +805,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
             XYSeries temp = new XYSeries("cluster" + idx);
             for (GNode node : cluster.getcNodes()) {
                 //if(testResults.containsKey(Utils.generateIndexString(node.getX(), node.getY()))){
-                temp.add(node.getX(), node.getY());
+                    temp.add(node.getX(), node.getY());
                 //}
             }
             seriesSet.add(temp);
@@ -846,12 +916,16 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
     private javax.swing.JTextField InputFileLocationTextBox;
     private javax.swing.JButton browseButton;
     private javax.swing.JTextField cCountTxt;
+    private javax.swing.JButton calcCoeffBtn;
+    private javax.swing.JTextField coeffTxt;
     private javax.swing.JComboBox fileTypeCombo;
     private javax.swing.JComboBox initTypeCombo;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jDistance;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -869,10 +943,12 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JLabel maxCountLbl;
     private javax.swing.JButton plotMapBtn;
     private javax.swing.JButton saveData;
     private javax.swing.JTextArea statusTextArea;
     private javax.swing.JButton trainButton;
+    private javax.swing.JButton viewMatrixBtn;
     // End of variables declaration//GEN-END:variables
 
     @Override

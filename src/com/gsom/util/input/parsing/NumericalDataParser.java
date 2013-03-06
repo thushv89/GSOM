@@ -49,10 +49,10 @@ public class NumericalDataParser extends InputParser{
                             System.out.println("Errorrrr      ");
                         }
 
-                            GSOMConstants.DIMENSIONS = weights.get(0).length;
-				input.close();
-				super.normalizeData(weights, GSOMConstants.DIMENSIONS);
-				iListener.inputParseComplete(); //trigger inputParseComplete event
+                        GSOMConstants.DIMENSIONS = weights.get(0).length;
+                        input.close();
+			super.normalizeData(weights, GSOMConstants.DIMENSIONS);
+			iListener.inputParseComplete(); //trigger inputParseComplete event
 
 		}
 		catch (IOException ex){

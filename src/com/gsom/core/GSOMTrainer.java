@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gsom.listeners.GSOMTrainerListener;
-import com.gsom.listeners.NodeGrowthListener;
 import com.gsom.objects.GNode;
 import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.util.Utils;
 
-public class GSOMTrainer implements NodeGrowthListener {
+public class GSOMTrainer {
 
     private Map<String, GNode> nodeMap;
     private NodeGrowthHandler growthHandler;
@@ -23,7 +21,7 @@ public class GSOMTrainer implements NodeGrowthListener {
         growthHandler = new NodeGrowthHandler();
     }
 
-    public void trainNetwork(ArrayList<String> iStrings, ArrayList<double[]> iWeights, GSOMTrainerListener listener) {
+    public Map<String,GNode> trainNetwork(ArrayList<String> iStrings, ArrayList<double[]> iWeights) {
         initFourNodes(initType);	//init the map with four nodes
         for (int i = 0; i < GSOMConstants.MAX_ITERATIONS; i++) {
             int k = 0;
@@ -34,7 +32,7 @@ public class GSOMTrainer implements NodeGrowthListener {
                 k++;
             }
         }
-        listener.GSOMTrainingCompleted(nodeMap);
+        return nodeMap;
     }
 
     private void trainForSingleIterAndSingleInput(int iter, double[] input, String str, double learningRate, double radius) {
@@ -44,7 +42,7 @@ public class GSOMTrainer implements NodeGrowthListener {
         winner.calcAndUpdateErr(input);
 
         for (Map.Entry<String, GNode> entry : nodeMap.entrySet()) {
-            entry.setValue(adjustNeighbourWeight(entry.getValue(), winner, input, radius, learningRate));
+            entry.setValue(Utils.adjustNeighbourWeight(entry.getValue(), winner, input, radius, learningRate));
         }
 
         if (winner.getErrorValue() > GSOMConstants.getGT()) {
@@ -53,17 +51,7 @@ public class GSOMTrainer implements NodeGrowthListener {
         }
     }
 
-    //Adjust winner's neighbor weights accordingly
-    public GNode adjustNeighbourWeight(GNode node, GNode winner, double[] input, double radius, double learningRate) {
-        double nodeDistSqr = Math.pow(winner.getX() - node.getX(), 2) + Math.pow(winner.getY() - node.getY(), 2);
-        double radiusSqr = Math.pow(radius, 2);
-        //if node is within the radius
-        if (nodeDistSqr < radiusSqr) {
-            double influence = Math.exp(-nodeDistSqr / (2 * radiusSqr));
-            node.adjustWeights(input, influence, learningRate);
-        }
-        return node;
-    }
+    
 
     //Initialization of the map. 
     //this will create 4 nodes with random weights
@@ -104,15 +92,10 @@ public class GSOMTrainer implements NodeGrowthListener {
                 && nodeMap.containsKey(nodeBottomStr)) {
             distrErrToNeighbors(winner, nodeLeftStr, nodeRightStr, nodeTopStr, nodeBottomStr);
         } else {
-            growthHandler.growNodes(nodeMap, winner, this); //NodeGrowthHandler takes over
+            growthHandler.growNodes(nodeMap, winner); //NodeGrowthHandler takes over
         }
     }
 
-    //When the node growing is complete this event fill be fired
-    @Override
-    public void nodeGrowthComplete(Map<String, GNode> map) {
-        //System.out.println("Node growth Complete");
-    }
 
     //distributing error to the neighbors of thw winning node
     private void distrErrToNeighbors(GNode winner, String leftK, String rightK, String topK, String bottomK) {

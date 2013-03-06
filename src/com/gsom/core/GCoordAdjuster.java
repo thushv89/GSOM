@@ -3,13 +3,12 @@ package com.gsom.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gsom.listeners.NodePositionAdjustListener;
 import com.gsom.objects.GNode;
 import com.gsom.util.Utils;
 
 public class GCoordAdjuster {
 
-	public void adjustMapCoords(Map<String,GNode> map, NodePositionAdjustListener listener){
+	public Map<String,GNode> adjustMapCoords(Map<String,GNode> map){
 		Map<String,GNode> newMap = new HashMap<String,GNode>();
 		
 		int minX=0;
@@ -36,7 +35,7 @@ public class GCoordAdjuster {
 			newMap.put(Utils.generateIndexString(node.getX(), node.getY()), node);
 		}
 		//discard the previous map
-		listener.nodePositionAdjustComplete(newMap);
-		return;
+		
+		return newMap;
 	}
 }

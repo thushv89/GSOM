@@ -1,17 +1,16 @@
 package com.gsom.core;
 
+import com.gsom.core.cluster.ClusterQualityEvaluator;
+import com.gsom.core.cluster.SilhouetteCoeffEval;
 import com.gsom.enums.InitType;
 import com.gsom.enums.InputDataType;
-import com.gsom.listeners.ClusteringListener;
 import com.gsom.listeners.GSOMRunListener;
-import com.gsom.listeners.GSOMSmoothnerListener;
-import java.util.Map;
 
-import com.gsom.listeners.GSOMTrainerListener;
+import java.util.Map;
 import com.gsom.listeners.InputParsedListener;
-import com.gsom.listeners.NodePositionAdjustListener;
 import com.gsom.objects.GCluster;
 import com.gsom.objects.GNode;
+import com.gsom.util.input.parsing.GSOMConstants;
 import com.gsom.util.input.parsing.InputParser;
 import com.gsom.util.input.parsing.InputParserFactory;
 import java.io.BufferedReader;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePositionAdjustListener, GSOMSmoothnerListener, ClusteringListener {
+public class GSOMRun implements InputParsedListener{
 
     private InputParserFactory parserFactory;
     private InputParser parser;
@@ -48,62 +47,68 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
     
     private InitType initType;
     
+    private ClusterQualityEvaluator coeffEval;
+    
     public GSOMRun(InitType initType,GSOMRunListener listener) {
         this.listener = listener;
         this.initType = initType;
-    }
-
-    public void runTraining(String fileName, InputDataType type) {
-        startTime = System.currentTimeMillis();
+        
         parserFactory = new InputParserFactory();
         trainer = new GSOMTrainer(initType);
         adjuster = new GCoordAdjuster();
         smoothner = new GSOMSmoothner();
         tester = new GSOMTester();
         clusterer = new KMeanClusterer();
+        
+        coeffEval = new SilhouetteCoeffEval();
+    }
 
-        //String fileName = "texture_proportion.txt";
+    public void runTraining(String fileName, InputDataType type) {
+
         if (type==InputDataType.FLAGS) {
             parser = parserFactory.getInputParser(InputDataType.FLAGS);
-        } else if (type==InputDataType.ASHES) {
-            parser = parserFactory.getInputParser(InputDataType.ASHES);
         } else if (type==InputDataType.NUMERICAL) {
             parser = parserFactory.getInputParser(InputDataType.NUMERICAL);
         }
         parser.parseInput(this, fileName);
     }
 
-    @Override
-    public void nodePositionAdjustComplete(Map<String, GNode> map) {
-        // TODO Auto-generated method stub
-        System.out.println("Node position Adjustment Complete");
-        listener.stepCompleted("Node position Adjustment Complete");
-        this.map = map;
-
-        smoothner.smoothGSOM(map, parser.getWeights(), this);
-
-    }
-
-    @Override
-    public void GSOMTrainingCompleted(Map<String, GNode> map) {
-        System.out.println("GSOM Training completed!");
+    private void runAllSteps(){
+        
+        GSOMConstants.FD = GSOMConstants.SPREAD_FACTOR/GSOMConstants.DIMENSIONS;
+        
+        map = trainer.trainNetwork(parser.getStrForWeights(), parser.getWeights());
         listener.stepCompleted("GSOM Training completed!");
-        adjuster.adjustMapCoords(map, this);
-
+        
+        map = adjuster.adjustMapCoords(map);
+        listener.stepCompleted("Node position Adjustment Complete");
+        
+        map = smoothner.smoothGSOM(map, parser.getWeights());
+        listener.stepCompleted("Smoothing phase completed!");
+        
+        tester.testGSOM(map, parser.getWeights(), parser.getStrForWeights());
+        this.testResults = tester.getTestResultMap();
+        
+        clusterer.runClustering(map);
+        this.allClusters = clusterer.getAllClusters();
+        this.bestCCount = clusterer.getBestClusterCount();
+        
+        listener.stepCompleted("Clustering completed!");
+        listener.stepCompleted("------------------------------------------------");
+        
+        listener.executionCompleted();      
+        
     }
+    
 
     @Override
     public void inputParseComplete() {
         listener.stepCompleted("Input parsing,normalization completed");
-        trainer.trainNetwork(parser.getStrForWeights(), parser.getWeights(), this);
+        GSOMConstants.DIMENSIONS = parser.getWeights().get(0).length;
+        runAllSteps();
     }
 
-    public void runTesting(Map<String, GNode> map, ArrayList<double[]> iWeights, ArrayList<String> iStrings) {
-        testResults = tester.testGSOM(map, iWeights, iStrings);
-        for(Map.Entry<String,String> entry : testResults.entrySet()){
-            System.out.println(entry.getKey()+":"+entry.getValue());
-        }
-    }
+ 
 
     public Map<String, GNode> getGSOMMap() {
         return this.map;
@@ -113,6 +118,13 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
         return this.testResults;
     }
 
+    public double getSilCoeff(int numCluster){
+        //return clusterer.getSilhoutteCoefficient(numCluster);
+        coeffEval.evaluate(this.allClusters.get(numCluster-2));
+        SilhouetteCoeffEval sCoeffEval = (SilhouetteCoeffEval)coeffEval;
+        return sCoeffEval.getSilCoeff();
+    }
+    
     public ArrayList<ArrayList<GCluster>> getAllClusters() {
         return this.allClusters;
     }
@@ -121,55 +133,4 @@ public class GSOMRun implements InputParsedListener, GSOMTrainerListener, NodePo
         return this.bestCCount;
     }
     
-    @Override
-    public void smootheningCompleted(Map<String, GNode> map) {
-        double totalErrorValue = 0;
-        endTimeBeforeClustering = System.currentTimeMillis();
-        listener.stepCompleted("Time before Clustering : " + timeFormatter(endTimeBeforeClustering - startTime));
-        listener.stepCompleted("Smoothing phase completed!");
-        //goodness of the map
-        for (GNode node : map.values()) {
-            totalErrorValue += node.getErrorValue();
-        }
-        listener.stepCompleted("Goodness of the Map : " + totalErrorValue / map.size());
-        runTesting(map, parser.getWeights(), parser.getStrForWeights());
-        clusterer.runClustering(map, this);
-    }
-
-    @Override
-    public void clusteringCompleted(ArrayList<ArrayList<GCluster>> clusters,int bestCount) {
-        endTimeAfterClustering = System.currentTimeMillis();
-        listener.stepCompleted("End Time : " + timeFormatter(endTimeAfterClustering - startTime));
-        listener.stepCompleted("Clustering completed!");
-        listener.stepCompleted("------------------------------------------------");
-        this.allClusters = clusters;
-        this.bestCCount = bestCount;
-        listener.executionCompleted();
-
-    }
-
-    public static void readFile(File inputFile) throws FileNotFoundException, IOException {
-        BufferedReader br = new BufferedReader(new FileReader(inputFile));
-        String line;
-        HashMap<String, String> map = new HashMap<String, String>();
-        int count = 0;
-
-        // To hold key and values
-        String[] vals = new String[2];
-
-        br.close();
-    }
-
-    public String timeFormatter(long millis) {
-
-        if (millis > 1000) {
-            return String.format("%d s, %d ms",
-                    TimeUnit.MILLISECONDS.toSeconds(millis),
-                    millis
-                    - TimeUnit.MILLISECONDS.toSeconds(millis)*1000);
-        } else {
-            return (Long.toString(millis)+" ms");
-        }
-
-    }
 }
