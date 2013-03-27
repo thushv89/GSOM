@@ -15,7 +15,7 @@ import com.gsom.ui.image_ui.ImageNetworkController;
 import com.gsom.ui.image_ui.SingleNodeImageController;
 import com.gsom.ui.image_ui.listeners.ImageNetworkControllerListener;
 import com.gsom.util.GFileHandler;
-import com.gsom.util.input.parsing.GSOMConstants;
+import com.gsom.util.GSOMConstants;
 import com.gsom.util.Utils;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
@@ -337,7 +337,7 @@ public class MainWindow extends javax.swing.JFrame implements GSOMRunListener, I
 
         jLabel8.setText("Distance");
 
-        jDistance.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Euclidean", "Chi-Square", "Intersection" }));
+        jDistance.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Euclidean", "Chi-Square", "Cosine" }));
 
         jLabel7.setText("Parser");
 

@@ -28,7 +28,7 @@ public class ArrayHelper {
         double[] arr_copy = array.clone();
         
         for (int i = 0; i < array.length; i++) {
-            arr_copy[i] = arr_copy[i] * constant;
+            arr_copy[i] = (double)arr_copy[i] * constant;
         }
         return arr_copy;
     }

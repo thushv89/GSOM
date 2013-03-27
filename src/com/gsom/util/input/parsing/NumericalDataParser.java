@@ -6,7 +6,7 @@ package com.gsom.util.input.parsing;
 
 
 import com.gsom.util.input.parsing.InputParser;
-import com.gsom.util.input.parsing.GSOMConstants;
+import com.gsom.util.GSOMConstants;
 import com.gsom.listeners.InputParsedListener;
 import java.io.BufferedReader;
 import java.io.File;

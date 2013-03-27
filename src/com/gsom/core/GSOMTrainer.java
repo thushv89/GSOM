@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.gsom.objects.GNode;
-import com.gsom.util.input.parsing.GSOMConstants;
+import com.gsom.util.GSOMConstants;
 import com.gsom.util.Utils;
 
 public class GSOMTrainer {

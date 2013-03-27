@@ -5,24 +5,14 @@ import com.gsom.core.cluster.SilhouetteCoeffEval;
 import com.gsom.enums.InitType;
 import com.gsom.enums.InputDataType;
 import com.gsom.listeners.GSOMRunListener;
-
-import java.util.Map;
 import com.gsom.listeners.InputParsedListener;
 import com.gsom.objects.GCluster;
 import com.gsom.objects.GNode;
-import com.gsom.util.input.parsing.GSOMConstants;
+import com.gsom.util.GSOMConstants;
 import com.gsom.util.input.parsing.InputParser;
 import com.gsom.util.input.parsing.InputParserFactory;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 public class GSOMRun implements InputParsedListener{
 
@@ -40,11 +30,7 @@ public class GSOMRun implements InputParsedListener{
     private int bestCCount;
     
     private GSOMRunListener listener;
-    
-    private long startTime;
-    private long endTimeBeforeClustering;
-    private long endTimeAfterClustering;
-    
+   
     private InitType initType;
     
     private ClusterQualityEvaluator coeffEval;
@@ -58,8 +44,7 @@ public class GSOMRun implements InputParsedListener{
         adjuster = new GCoordAdjuster();
         smoothner = new GSOMSmoothner();
         tester = new GSOMTester();
-        clusterer = new KMeanClusterer();
-        
+        clusterer = new KMeanClusterer();        
         coeffEval = new SilhouetteCoeffEval();
     }
 

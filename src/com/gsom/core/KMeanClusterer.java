@@ -6,7 +6,7 @@ package com.gsom.core;
 
 import com.gsom.objects.GCluster;
 import com.gsom.objects.GNode;
-import com.gsom.util.input.parsing.GSOMConstants;
+import com.gsom.util.GSOMConstants;
 import com.gsom.util.Utils;
 import java.util.*;
 
@@ -47,7 +47,6 @@ public class KMeanClusterer {
     
     //get cluster list with "k" number of clusters
     private ArrayList<GCluster> getKClusters(int k) {
-        System.out.println("\n-------------------------"+k+"--------------------------");
         ArrayList<GCluster> clusterList = new ArrayList<GCluster>();
         ArrayList<GNode> clusterCentroids = getHighestHitNeurons(k);
 
@@ -84,27 +83,11 @@ public class KMeanClusterer {
             }
             //Assign Neurons
             clusterList = assignNeuronsToClusters(clusterList);
-            System.out.println(count+"");
+
             
             count++;
         }
-
-        /*
-        int idx = 0;
-        for(GCluster cl : clusterList){
-            System.out.println("Cluster "+cl.getX()+","+cl.getY()+
-                    " Elements - Before: "+clSizes.get(idx) +" After: "+cl.getcNodes().size());
-                    idx++;
-        }
-        
-        for(GCluster c : clusterList){
-            System.out.print(c.getX()+","+c.getY()+" - ");
-            for(GNode n : c.getcNodes()){
-                System.out.print(n.getX()+","+n.getY()+" ");
-            }
-            System.out.println("");
-        }*/
-        
+      
         return clusterList;
     }
 

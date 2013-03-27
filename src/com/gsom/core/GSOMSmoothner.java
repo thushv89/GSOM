@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.gsom.objects.GNode;
-import com.gsom.util.input.parsing.GSOMConstants;
+import com.gsom.util.GSOMConstants;
 import com.gsom.util.Utils;
 
 public class GSOMSmoothner {
@@ -16,6 +16,7 @@ public class GSOMSmoothner {
 
     public Map<String, GNode> smoothGSOM(Map<String, GNode> map, ArrayList<double[]> inputs) {
         GSOMConstants.START_LEARNING_RATE = GSOMConstants.START_LEARNING_RATE / 2;
+        GSOMConstants.MAX_NEIGHBORHOOD_RADIUS = GSOMConstants.MAX_NEIGHBORHOOD_RADIUS / 2;
         for (int iter = 0; iter < GSOMConstants.MAX_ITERATIONS; iter++) {
             double learningRate = Utils.getLearningRate(iter, map.size());
             double radius = Utils.getRadius(iter, Utils.getTimeConst());

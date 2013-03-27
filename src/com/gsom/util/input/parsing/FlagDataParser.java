@@ -6,6 +6,7 @@ package com.gsom.util.input.parsing;
 
 
 import com.gsom.listeners.InputParsedListener;
+import com.gsom.util.GSOMConstants;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,7 +22,7 @@ public class FlagDataParser extends InputParser{
     @Override
     public void parseInput(InputParsedListener iListener, String fileName) {
         String tokenizer=",";
-		int numOfDimensions = 29;
+		int numOfDimensions = 35;
                 GSOMConstants.DIMENSIONS = numOfDimensions;
 
 		try {
@@ -43,7 +44,7 @@ public class FlagDataParser extends InputParser{
                                                 int idx = 0;
 						for(int j=1;j<tokens.length;j++){
                                                     if(isNumeric(tokens[j])){
-                                                        weightArr[idx]=Integer.parseInt(tokens[j]);  
+                                                        weightArr[idx]=Double.parseDouble(tokens[j]);  
                                                         idx++;
                                                     }else {
                                                         Color color = getColor(tokens[j]);
@@ -56,6 +57,7 @@ public class FlagDataParser extends InputParser{
 							
 						}
 						weights.add(weightArr);
+                                                GSOMConstants.DIMENSIONS = weights.get(0).length;
 					}					
 				}
 			}

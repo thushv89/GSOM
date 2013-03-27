@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.gsom.listeners.InputParsedListener;
 import com.gsom.util.ArrayHelper;
+import com.gsom.util.GSOMConstants;
 import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;

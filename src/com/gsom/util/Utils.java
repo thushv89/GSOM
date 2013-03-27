@@ -1,6 +1,6 @@
 package com.gsom.util;
 
-import com.gsom.util.input.parsing.GSOMConstants;
+import com.gsom.util.GSOMConstants;
 import java.util.Map;
 
 import com.gsom.objects.GNode;
@@ -65,7 +65,7 @@ public class Utils {
             return winner;
         } else if (MainWindow.distance == 2) {
             for (Map.Entry<String, GNode> entry : nodeMap.entrySet()) {
-                currDist = Utils.calcIntersectionDist(input, entry.getValue().getWeights(),GSOMConstants.DIMENSIONS);
+                currDist = Utils.calcCosineDist(input, entry.getValue().getWeights(),GSOMConstants.DIMENSIONS);
 
                 if (currDist < minDist) {
                     winner = entry.getValue();
@@ -127,6 +127,13 @@ public class Utils {
         return 1-total;
     }
     
+    public static double calcCosineDist(double[] vec1,double[] vec2,int dimensions){
+        double total = 0;
+        for(int i=0;i<dimensions;i++){
+            total += vec1[i]*vec2[i];
+        }
+        return total/(dimensions*dimensions);
+    }
     private static void normalizeVector(double[] vec){
         double max1=0;
         

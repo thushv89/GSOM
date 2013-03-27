@@ -1,12 +1,9 @@
 package com.gsom.core;
 
 import java.util.Map;
-
-import javax.rmi.CORBA.Util;
-
 import com.gsom.objects.GNode;
 import com.gsom.util.ArrayHelper;
-import com.gsom.util.input.parsing.GSOMConstants;
+import com.gsom.util.GSOMConstants;
 import com.gsom.util.Utils;
 
 public class NodeGrowthHandler {
@@ -190,6 +187,9 @@ public class NodeGrowthHandler {
 			if(newWeights[i]<0){
 				newWeights[i]=0;
 			}
+                        if(newWeights[i]>1){
+                            newWeights[i]=1;
+                        }
 		}
 		return newWeights;
 	}

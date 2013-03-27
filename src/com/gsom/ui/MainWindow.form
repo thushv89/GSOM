@@ -394,7 +394,7 @@
               <StringArray count="3">
                 <StringItem index="0" value="Euclidean"/>
                 <StringItem index="1" value="Chi-Square"/>
-                <StringItem index="2" value="Intersection"/>
+                <StringItem index="2" value="Cosine"/>
               </StringArray>
             </Property>
           </Properties>
